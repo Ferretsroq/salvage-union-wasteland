@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/salvage-union-wasteland/static/css/main.073c9b0a.css",
-    "main.js": "/salvage-union-wasteland/static/js/main.8ba17356.js",
+    "main.js": "/salvage-union-wasteland/static/js/main.1e8a258f.js",
     "static/js/787.1e5789f1.chunk.js": "/salvage-union-wasteland/static/js/787.1e5789f1.chunk.js",
     "static/media/logo.svg": "/salvage-union-wasteland/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/salvage-union-wasteland/index.html",
     "main.073c9b0a.css.map": "/salvage-union-wasteland/static/css/main.073c9b0a.css.map",
-    "main.8ba17356.js.map": "/salvage-union-wasteland/static/js/main.8ba17356.js.map",
+    "main.1e8a258f.js.map": "/salvage-union-wasteland/static/js/main.1e8a258f.js.map",
     "787.1e5789f1.chunk.js.map": "/salvage-union-wasteland/static/js/787.1e5789f1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.8ba17356.js"
+    "static/js/main.1e8a258f.js"
   ]
 }
