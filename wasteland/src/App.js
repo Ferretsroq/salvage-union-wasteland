@@ -6,9 +6,7 @@ import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
 import {Biome, Biomes} from './biomes';
-//import {EncounterCard} from './EncounterCard.js'
 
-let nodeText = 'bar';
 
 
 
@@ -30,7 +28,7 @@ class Grid extends Component
       const keys = Object.keys(Biomes);
       const roll = Math.floor(Math.random()*keys.length);
       const biome = Biomes[keys[roll]];
-      this.state.hexes[i] = {num: 0, biome: biome, color: biome.color, text: biome.name, graph: new NodeMap(4, biome)};
+      this.state.hexes[i] = {num: 0, biome: biome, color: biome.color, text: biome.name, graph: new NodeMap(10, biome), threats: this.RollThreats()};
     }
     this.state.hexes[0].color = 'red';
     this.setState({activeGraph: this.state.hexes[0].graph});
@@ -45,15 +43,15 @@ class Grid extends Component
   
   updateCounter(index)
   {
-    this.state.hexes[index].num++;
     for(let hex = 0; hex < Object.keys(this.state.hexes).length; hex++)
     {
       this.state.hexes[hex].color = this.state.hexes[hex].biome.color;
     }
     this.state.hexes[index].color = 'red';
     this.setState({hexes: this.state.hexes});
-    this.setState({text: `${this.state.hexes[index].text}`} );
+    this.setState({text: [`${this.state.hexes[index].text}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[index].threats.join(', ')}`]} );
     this.setState({activeGraph: this.state.hexes[index].graph});
+    this.setState({subtext: ''});
   }
 
   makeTiles(num)
@@ -74,9 +72,20 @@ class Grid extends Component
     if(event.nodes.length > 0)
     {
       this.state.subtext = this.state.activeGraph.web.web[event.nodes[0]].text.toString();
-      //this.state.subtext = event.nodes[0].toString();
       this.setState({subtext: this.state.subtext});
     }
+  }
+  RollThreats(hex)
+  {
+    const threatList = ['Tyrant', 'Torment', 'Environmental', 'Brute', 'Aberration'];
+    const num = Math.floor(Math.random()*3)+1;
+    let threats = [];
+    for(let threatNum = 0; threatNum < num; threatNum++)
+    {
+      const threat = threatList[Math.floor(Math.random()*threatList.length)];
+      threats.push(threat);
+    }
+    return threats;
   }
 
   render()
@@ -109,7 +118,7 @@ class NodeMap
 {
   constructor(size, biome)
   {
-        this.size = Math.floor(Math.random()*size);
+        this.size = size;
         this.web = new NodeWeb(0.25);
         this.graph = {nodes: [], edges: []};
         this.options = {
@@ -137,13 +146,13 @@ class NodeMap
                   }};
         this.biome = biome;
         this.text = '';
-        this.web.GenerateWeb(this.size);
+        this.web.GenerateWeb(this.size, 3);
         this.web.MakeNodeConnections();
         for(let index = 0; index < Object.keys(this.web.web).length; index++)
         {
           const node = this.web.web[index];
           const poi = biome.rollPOI();
-          node.text = `${poi.poi}: ${poi.salvage} salvage`;
+          node.text = `${poi.poi}: ${this.RollSalvage(poi.salvage)} scrap`;
           this.graph.nodes.push({id: node.id, label: node.id.toString(), title: `Node: ${node.id}, exits: ${node.exits}`});
           if(node.exits.length > 0)
           {
@@ -153,6 +162,28 @@ class NodeMap
             }
           }
         }
+    }
+    RollSalvage(salvageLevel)
+    {
+      let base = 0;
+      if(salvageLevel == 'Low')
+      {
+        base += 5;
+      }
+      if(salvageLevel == 'Medium')
+      {
+        base += 10;
+      }
+      if(salvageLevel == 'High')
+      {
+        base += 15;
+      }
+      if(salvageLevel == 'Very High')
+      {
+        base += 30;
+      }
+      const roll = Math.floor(Math.random()*10);
+      return base + roll;
     }
 }
 

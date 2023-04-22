@@ -18,7 +18,6 @@ class Biome
         this.name = name;
         this.description = description;
         this.color = color;
-        console.log(poi);
         this.poi = poi;
     }
     rollPOI()

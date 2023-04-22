@@ -76,12 +76,19 @@ class NodeWeb
 		this.nextID++;
 		this.AddNodeToWeb(node);
 	}
-	RollNodeExits(nodeID=0, maxSize=1000)
+	RollNodeExits(nodeID=0, maxSize=1000, minSize=1)
 	{
 		if(Object.keys(this.web).length < maxSize)
 		{
 			let node = this.web[nodeID];
-			let numExits = Math.floor(Math.random() * 5);
+			let numExits = Math.floor(Math.random() * 2);
+			if(Object.keys(this.web).length < minSize)
+			{
+				while(numExits == 0)
+				{
+					numExits = Math.floor(Math.random() * 2);
+				}
+			}
 			if(numExits == 0)
 			{
 				return;
@@ -94,14 +101,15 @@ class NodeWeb
 				newNode.exits.push(nodeID);
 				node.exits.push(newNode.id);
 				this.AddNodeToWeb(newNode);
-				this.RollNodeExits(newNode.id, maxSize);
+				this.RollNodeExits(newNode.id, maxSize, minSize);
 			}
 		}
+
 	}
-	GenerateWeb(maxSize = 1000)
+	GenerateWeb(maxSize = 1000, minSize = 1)
 	{
 		let node = this.AddNode();
-		this.RollNodeExits(node.id, maxSize=maxSize);
+		this.RollNodeExits(node.id, maxSize=maxSize, minSize=minSize);
 	}
 	MakeNodeConnections()
 	{
