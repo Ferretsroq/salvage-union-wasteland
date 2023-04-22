@@ -161,4 +161,4 @@ class NodeWeb
 		return returnString;
 	}
 }
-module.exports = {NodeWeb};
+export {NodeWeb};

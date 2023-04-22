@@ -1,27 +1,54 @@
 import logo from './logo.svg';
 import './App.css';
 import {Hexagon, TiledHexagons} from 'tiled-hexagons';
-import { React, Component, createRef } from 'react';
+import { React, Component, Text } from 'react';
 import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
 //import {EncounterCard} from './EncounterCard.js'
+
+let nodeText = 'bar';
+
 
 class AreaMap extends Component
 {
   constructor(props)
   {
     super(props)
-    this.state = 
+    if(props == null || Object.keys(props).length == 0 || Object.keys(props).length == 1)
     {
-      size: Math.floor(Math.random()*5),
-      web: new NodeWeb(1),
-      graph: {nodes: [], edges: []},
-      options: {layout: {hierarchical: false}, edges: {color: "#000000"}, height: "500px", physics: {enabled: true}, edges: {physics: false}},
-      events: {select: function(event) { var {nodes, edges} = event;}},
-      display: false
-    }
-    this.state.web.GenerateWeb(this.state.size);
+      this.state = 
+      {
+        size: Math.floor(Math.random()*4),
+        web: new NodeWeb(0.25),
+        graph: {nodes: [], edges: []},
+        options: {
+                    layout: 
+                    {
+                      hierarchical: false
+                    }, 
+                    edges: 
+                    {
+                      color: "#000000"
+                    },
+                    height: "500px", 
+                    physics: 
+                    {
+                      enabled: true
+                    }, 
+                    edges: 
+                    {
+                      physics: false
+                    },
+                    interaction:
+                  {
+                    dragNodes: false,
+                    dragView: false
+                  }},
+        text: '',
+        display: false,
+      }
+      this.state.web.GenerateWeb(this.state.size);
     this.state.web.MakeNodeConnections();
     for(let index = 0; index < Object.keys(this.state.web.web).length; index++)
     {
@@ -35,15 +62,45 @@ class AreaMap extends Component
         }
       }
     }
+    }
+    else
+    {
+      console.log(props);
+      console.log('bar');
+      this.state = 
+      {
+        web: props.web,
+        graph: props.graph,
+        options: props.options,
+        text: props.text
+      }
+    }
+    
+    this.events = {selectNode: function(event) 
+    {
+      this.updateText(event);
+    }.bind(this)};
+    
+  }
+  updateText(event)
+  {
+    if(event.nodes.length > 0)
+    {
+      this.state.text = event.nodes[0].toString();
+      this.setState({text: this.state.text});
+    }
   }
   render()
   {
     return(
+      <div>
+        <>{this.state.text}</>
       <Graph 
       graph={this.state.graph}
       options={this.state.options}
-      events={this.state.events}
+      events={this.events}
       />
+      </div>
     )
   }
 }
@@ -57,15 +114,24 @@ class Grid extends Component
       count: 0,
       hexes: {},
       text: '',
-      activeGraph: new AreaMap()
+      activeGraph: new NodeMap(4),
+      subtext: ''
     }
     for(let i = 0; i < 100; i++)
     {
-      this.state.hexes[i] = {num: 0, color: 'gray', text: Math.floor(Math.random() * 100).toString()+ ' scrap here!', graph: new AreaMap(), graphVisible: false};
+      this.state.hexes[i] = {num: 0, color: 'gray', text: Math.floor(Math.random() * 100).toString()+ ' scrap here!', graph: new NodeMap(4), graphVisible: false};
     }
+    this.state.hexes[0].color = 'green';
     this.setState({activeGraph: this.state.hexes[0].graph});
+    this.setState({subtext: this.state.activeGraph.text});
+    this.setState({text: this.state.hexes[0].text});
+    this.events = {selectNode: function(event) 
+      {
+        this.updateText(event);
+      }.bind(this)};
   }
 
+  
   updateCounter(index)
   {
     this.state.hexes[index].num++;
@@ -74,9 +140,8 @@ class Grid extends Component
       this.state.hexes[hex].color = 'gray';
     }
     this.state.hexes[index].color = 'green';
-
     this.setState({hexes: this.state.hexes});
-    this.setState({text: this.state.hexes[index].text});
+    this.setState({text: `${this.state.hexes[index].text}`} );
     this.setState({activeGraph: this.state.hexes[index].graph});
   }
 
@@ -93,12 +158,21 @@ class Grid extends Component
     }
     return tiles;
   }
+  updateText(event)
+  {
+    if(event.nodes.length > 0)
+    {
+      this.state.subtext = event.nodes[0].toString();
+      this.setState({subtext: this.state.subtext});
+    }
+  }
 
   render()
   {
     let {count} = this.state;
     let {hexes} = this.state;
-    console.log(this.state.activeGraph);
+    //this.state.activeGraph.setState({text: this.state.activeGraph.state.text});
+    //this.state.activeGraph.forceUpdate();
     return(
       <div>
       <TiledHexagons
@@ -108,24 +182,72 @@ class Grid extends Component
       maxHorizontal={8}
       tiles={this.makeTiles(30)}
       />
-      <>{this.state.text}</>
-      <Graph
-            graph={this.state.activeGraph.state.graph}
-            options={this.state.activeGraph.state.options}
-            events={this.state.activeGraph.state.events}
-      />
+      <div><>{this.state.text}</></div>
+      <>{this.state.subtext}</>
+      {<Graph 
+      graph={this.state.activeGraph.graph}
+      options={this.state.activeGraph.options}
+      events={this.events}
+      
+    />}
       </div>
     )
   }
 }
 
+class NodeMap
+{
+  constructor(size)
+  {
+        this.size = Math.floor(Math.random()*size);
+        this.web = new NodeWeb(0.25);
+        this.graph = {nodes: [], edges: []};
+        this.options = {
+                    layout: 
+                    {
+                      hierarchical: false
+                    }, 
+                    edges: 
+                    {
+                      color: "#000000"
+                    },
+                    height: "500px", 
+                    physics: 
+                    {
+                      enabled: true
+                    }, 
+                    edges: 
+                    {
+                      physics: false
+                    },
+                    interaction:
+                  {
+                    dragNodes: false,
+                    dragView: false
+                  }};
+        this.text = '';
+        this.web.GenerateWeb(this.size);
+        this.web.MakeNodeConnections();
+        for(let index = 0; index < Object.keys(this.web.web).length; index++)
+        {
+          const node = this.web.web[index];
+          this.graph.nodes.push({id: node.id, label: node.id.toString(), title: `Node: ${node.id}, exits: ${node.exits}`});
+          if(node.exits.length > 0)
+          {
+            for(let exitIndex = 0; exitIndex < node.exits.length; exitIndex++)
+            {
+              this.graph.edges.push({from: node.id, to: parseInt(node.exits[exitIndex])})
+            }
+          }
+        }
+    }
+}
 
 
 function App() {
   return (
     <div>
     <Grid />
-
     </div>
   );
 }
