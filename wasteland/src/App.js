@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import {Hexagon, TiledHexagons} from 'tiled-hexagons';
-import { React, Component, Text } from 'react';
+import { React, Component } from 'react';
 import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
@@ -71,7 +71,13 @@ class Grid extends Component
   {
     if(event.nodes.length > 0)
     {
-      this.state.subtext = this.state.activeGraph.web.web[event.nodes[0]].text.toString();
+      this.state.subtext = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[0].toString();
+      this.state.tl1 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[1].toString();
+      this.state.tl2 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[2].toString();
+      this.state.tl3 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[3].toString();
+      this.state.tl4 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[4].toString();
+      this.state.tl5 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[5].toString();
+      this.state.tl6 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[6].toString();
       this.setState({subtext: this.state.subtext});
     }
   }
@@ -90,8 +96,7 @@ class Grid extends Component
 
   render()
   {
-    let {count} = this.state;
-    let {hexes} = this.state;
+
     return(
       <div>
       <TiledHexagons
@@ -103,6 +108,12 @@ class Grid extends Component
       />
       <div><>{this.state.text}</></div>
       <>{this.state.subtext}</>
+      <div>{this.state.tl1}</div>
+      <div>{this.state.tl2}</div>
+      <div>{this.state.tl3}</div>
+      <div>{this.state.tl4}</div>
+      <div>{this.state.tl5}</div>
+      <div>{this.state.tl6}</div>
       {<Graph 
       graph={this.state.activeGraph.graph}
       options={this.state.activeGraph.options}
@@ -151,8 +162,13 @@ class NodeMap
         for(let index = 0; index < Object.keys(this.web.web).length; index++)
         {
           const node = this.web.web[index];
-          const poi = biome.rollPOI();
-          node.text = `${poi.poi}: ${this.RollSalvage(poi.salvage)} scrap`;
+          const poi = biome.rollFeature();
+          const salvage = this.RollSalvage();
+          node.text = `${poi}:`;
+          for(let index = 0; index < salvage.length; index++)
+          {
+            node.text += `\nTL ${index+1} Scrap: ${salvage[index]}`;
+          }
           this.graph.nodes.push({id: node.id, label: node.id.toString(), title: `Node: ${node.id}, exits: ${node.exits}`});
           if(node.exits.length > 0)
           {
@@ -163,9 +179,9 @@ class NodeMap
           }
         }
     }
-    RollSalvage(salvageLevel)
+    RollSalvage()
     {
-      let base = 0;
+      /*let base = 0;
       if(salvageLevel == 'Low')
       {
         base += 5;
@@ -183,7 +199,37 @@ class NodeMap
         base += 30;
       }
       const roll = Math.floor(Math.random()*10);
-      return base + roll;
+      return base + roll;*/
+      let techLevel = 1;
+      const techRoll = Math.floor(Math.random()*100);
+      if(techRoll > 50 && techRoll < 75)
+      {
+        techLevel = 2;
+      }
+      else if(techRoll >= 75 && techRoll < 85)
+      {
+        techLevel = 3;
+      }
+      else if(techRoll >= 85 && techRoll < 95)
+      {
+        techLevel = 4;
+      }
+      else if(techRoll >= 95 && techRoll < 99)
+      {
+        techLevel = 5;
+      }
+      else
+      {
+        techLevel = 6;
+      }
+      let salvage = [0, 0, 0, 0, 0, 0];
+      for(let tech = 0; tech < techLevel; tech++)
+      {
+        const scrapAmount = Math.floor(Math.random()*15);
+        salvage[tech] = scrapAmount;
+      }
+      return salvage;
+      
     }
 }
 
