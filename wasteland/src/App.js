@@ -218,7 +218,7 @@ class NodeMap
       {
         techLevel = 5;
       }
-      else
+      else if(techRoll >= 99)
       {
         techLevel = 6;
       }
@@ -228,6 +228,8 @@ class NodeMap
         const scrapAmount = Math.floor(Math.random()*15);
         salvage[tech] = scrapAmount;
       }
+      console.log(techRoll);
+      console.log(salvage);
       return salvage;
       
     }
