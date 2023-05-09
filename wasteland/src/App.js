@@ -1,11 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import {Hexagon, TiledHexagons} from 'tiled-hexagons';
-import { React, Component } from 'react';
+import { React, Component, useRef, createRef  } from 'react';
 import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
 import {Biome, Biomes} from './biomes';
+import html2canvas from 'html2canvas';
+import {jsPDF} from 'jspdf';
 
 
 
@@ -15,6 +17,7 @@ class Grid extends Component
   constructor(props)
   {
     super(props)
+    this.ref = createRef();
     this.state = 
     {
       count: 0,
@@ -23,7 +26,7 @@ class Grid extends Component
       activeGraph: new NodeMap(4, Biomes['Ruins']),
       subtext: ''
     }
-    for(let i = 0; i < 100; i++)
+    for(let i = 0; i < 30; i++)
     {
       const keys = Object.keys(Biomes);
       const roll = Math.floor(Math.random()*keys.length);
@@ -60,7 +63,7 @@ class Grid extends Component
     for(let i = 0; i < num; i++)
     {
       tiles.push({
-        text: '',
+        text: `${i}`,
         onClick: () => {this.updateCounter(i)},
         fill: this.state.hexes[i].color
       })
@@ -94,11 +97,47 @@ class Grid extends Component
     return threats;
   }
 
+  async Save()
+  {
+      const pdf = new jsPDF();
+      const element = this.ref.current;
+      for(let index = 0; index < 30; index++)
+      { 
+        for(let hex = 0; hex < 30; hex++)
+        {
+          this.state.hexes[hex].color = this.state.hexes[hex].biome.color;
+        }
+        this.state.hexes[index].color = 'red';
+        this.setState({hexes: this.state.hexes});
+        this.setState({text: [`${this.state.hexes[index].text}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[index].threats.join(', ')}`]} );
+        this.setState({activeGraph: this.state.hexes[index].graph});
+        this.setState({subtext: ''});
+        await new Promise(r => setTimeout(r, 100));
+        const canvas = await html2canvas(element);
+        const data = canvas.toDataURL('image/jpeg');
+        const imgProperties = pdf.getImageProperties(data);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+        pdf.addPage();
+        pdf.addImage(data, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        
+        for(let nodeIndex = 0; nodeIndex < Object.keys(this.state.hexes[index].graph.web.web).length; nodeIndex++)
+        {
+          pdf.addPage();
+          const nodeString = `Node ${nodeIndex}\n${this.state.hexes[index].graph.web.web[nodeIndex].text}`;
+          pdf.text(20, 20, nodeString);
+        }
+      }
+      
+      pdf.save('campaign_map.pdf');
+  }
+  
   render()
   {
 
     return(
-      <div>
+      <div ref={this.ref}>
+      <button onClick={this.Save.bind(this)}>Save</button>
       <TiledHexagons
       tileSideLengths={80}
       tileGap={0}
@@ -181,25 +220,6 @@ class NodeMap
     }
     RollSalvage()
     {
-      /*let base = 0;
-      if(salvageLevel == 'Low')
-      {
-        base += 5;
-      }
-      if(salvageLevel == 'Medium')
-      {
-        base += 10;
-      }
-      if(salvageLevel == 'High')
-      {
-        base += 15;
-      }
-      if(salvageLevel == 'Very High')
-      {
-        base += 30;
-      }
-      const roll = Math.floor(Math.random()*10);
-      return base + roll;*/
       let techLevel = 1;
       const techRoll = Math.floor(Math.random()*100);
       if(techRoll > 50 && techRoll < 75)
@@ -225,11 +245,10 @@ class NodeMap
       let salvage = [0, 0, 0, 0, 0, 0];
       for(let tech = 0; tech < techLevel; tech++)
       {
-        const scrapAmount = Math.floor(Math.random()*15);
+        const scrapAmount = Math.floor(Math.random()*15)+1;
         salvage[tech] = scrapAmount;
       }
-      console.log(techRoll);
-      console.log(salvage);
+
       return salvage;
       
     }
@@ -237,8 +256,21 @@ class NodeMap
 
 
 function App() {
+  const printRef = useRef();
+  const handleDownloadPdf = async () =>
+  {
+    const pdf = new jsPDF();
+    const element = printRef.current;
+    const canvas = await html2canvas(element);
+    const data = canvas.toDataURL('image/png');
+    const imgProperties = pdf.getImageProperties(data);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('test.pdf');
+  };
   return (
-    <div>
+    <div ref={printRef}>
     <Grid />
     </div>
   );
