@@ -37,7 +37,8 @@ class Biome
     {
         const featureOracle = this.featureOracles[Math.floor(Math.random()*this.featureOracles.length)];
         let result = RollOnOracle(featureOracle);
-        while(result == '[⏵Descriptor + Focus](Starforged/Oracles/Core/Descriptor)')
+        //while(result == '[⏵Descriptor + Focus](Starforged/Oracles/Core/Descriptor)')
+        while(result.startsWith('[⏵'))
         {
             result = RollOnOracle(featureOracle);
         }

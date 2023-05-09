@@ -6,6 +6,7 @@ import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
 import {Biome, Biomes} from './biomes';
+import {GetEncounter} from './encounters';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
 
@@ -75,12 +76,14 @@ class Grid extends Component
     if(event.nodes.length > 0)
     {
       this.state.subtext = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[0].toString();
-      this.state.tl1 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[1].toString();
-      this.state.tl2 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[2].toString();
-      this.state.tl3 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[3].toString();
-      this.state.tl4 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[4].toString();
-      this.state.tl5 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[5].toString();
-      this.state.tl6 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[6].toString();
+      this.state.encounterType = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[1].toString();
+      this.state.encounterText = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[2].toString();
+      this.state.tl1 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[3].toString();
+      this.state.tl2 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[4].toString();
+      this.state.tl3 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[5].toString();
+      this.state.tl4 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[6].toString();
+      this.state.tl5 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[7].toString();
+      this.state.tl6 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[8].toString();
       this.setState({subtext: this.state.subtext});
     }
   }
@@ -147,6 +150,8 @@ class Grid extends Component
       />
       <div><>{this.state.text}</></div>
       <>{this.state.subtext}</>
+      <div>{this.state.encounterType}</div>
+      <div>{this.state.encounterText}</div>
       <div>{this.state.tl1}</div>
       <div>{this.state.tl2}</div>
       <div>{this.state.tl3}</div>
@@ -203,7 +208,8 @@ class NodeMap
           const node = this.web.web[index];
           const poi = biome.rollFeature();
           const salvage = this.RollSalvage();
-          node.text = `${poi}:`;
+          const encounter = GetEncounter();
+          node.text = `Feature: ${poi}\nEncounter: ${this.FormatEncounter(encounter)}`;
           for(let index = 0; index < salvage.length; index++)
           {
             node.text += `\nTL ${index+1} Scrap: ${salvage[index]}`;
@@ -250,7 +256,23 @@ class NodeMap
       }
 
       return salvage;
-      
+    }
+    FormatEncounter(encounter)
+    {
+      let returnString = `${encounter.type}`;
+      if(encounter.type == 'Combat')
+      {
+        returnString += `\nMechs: ${encounter.content.Mechs}, Drones: ${encounter.content.Drones}, Vehicles: ${encounter.content.Vehicles}, People: ${encounter.content.People}`;
+      }
+      else if(encounter.type == 'Social')
+      {
+        returnString += `\n${encounter.content.type} need ${encounter.content.need}`;
+      }
+      else if(encounter.type == 'Environmental')
+      {
+        returnString += `\nRelated to feature`;
+      }
+      return returnString;
     }
 }
 
