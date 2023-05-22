@@ -9,6 +9,8 @@ import {Biome, Biomes} from './biomes';
 import {GetEncounter} from './encounters';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
+import {Text} from 'react-native';
+import {RollSystemOrModule} from './advancedsalvage'
 
 
 
@@ -75,15 +77,19 @@ class Grid extends Component
   {
     if(event.nodes.length > 0)
     {
-      this.state.subtext = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[0].toString();
-      this.state.encounterType = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[1].toString();
-      this.state.encounterText = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[2].toString();
-      this.state.tl1 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[3].toString();
-      this.state.tl2 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[4].toString();
-      this.state.tl3 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[5].toString();
-      this.state.tl4 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[6].toString();
-      this.state.tl5 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[7].toString();
-      this.state.tl6 = this.state.activeGraph.web.web[event.nodes[0]].text.split('\n')[8].toString();
+      const node = this.state.activeGraph.web.web[event.nodes[0]];
+      this.state.subtext = <Text>{`
+${node.text}
+Encounter: ${node.encounter}
+TL 1 Scrap: ${node.tl1}
+TL 2 Scrap: ${node.tl2}
+TL 3 Scrap: ${node.tl3}
+TL 4 Scrap: ${node.tl4}
+TL 5 Scrap: ${node.tl5}
+TL 6 Scrap: ${node.tl6}
+Advanced Salvage: ${node.advancedSalvage}`}</Text>
+
+
       this.setState({subtext: this.state.subtext});
     }
   }
@@ -127,7 +133,15 @@ class Grid extends Component
         for(let nodeIndex = 0; nodeIndex < Object.keys(this.state.hexes[index].graph.web.web).length; nodeIndex++)
         {
           pdf.addPage();
-          const nodeString = `Node ${nodeIndex}\n${this.state.hexes[index].graph.web.web[nodeIndex].text}`;
+          const node = this.state.hexes[index].graph.web.web[nodeIndex];
+          const nodeString = `Node ${nodeIndex}\n${node.text}
+          Encounter: ${node.encounter}
+          TL 1 Scrap: ${node.tl1}
+          TL 2 Scrap: ${node.tl2}
+          TL 3 Scrap: ${node.tl3}
+          TL 4 Scrap: ${node.tl4}
+          TL 5 Scrap: ${node.tl5}
+          TL 6 Scrap: ${node.tl6}`;
           pdf.text(20, 20, nodeString);
         }
       }
@@ -150,14 +164,7 @@ class Grid extends Component
       />
       <div><>{this.state.text}</></div>
       <>{this.state.subtext}</>
-      <div>{this.state.encounterType}</div>
-      <div>{this.state.encounterText}</div>
-      <div>{this.state.tl1}</div>
-      <div>{this.state.tl2}</div>
-      <div>{this.state.tl3}</div>
-      <div>{this.state.tl4}</div>
-      <div>{this.state.tl5}</div>
-      <div>{this.state.tl6}</div>
+
       {<Graph 
       graph={this.state.activeGraph.graph}
       options={this.state.activeGraph.options}
@@ -188,7 +195,12 @@ class NodeMap
                     height: "500px", 
                     physics: 
                     {
-                      enabled: true
+                      enabled: false,
+                      solver: "repulsion",
+                      repulsion:
+                      {
+                        nodeDistance: 100
+                      },
                     }, 
                     edges: 
                     {
@@ -209,11 +221,16 @@ class NodeMap
           const poi = biome.rollFeature();
           const salvage = this.RollSalvage();
           const encounter = GetEncounter();
-          node.text = `Feature: ${poi}\nEncounter: ${this.FormatEncounter(encounter)}`;
-          for(let index = 0; index < salvage.length; index++)
-          {
-            node.text += `\nTL ${index+1} Scrap: ${salvage[index]}`;
-          }
+          node.text = `Feature: ${poi}`;
+          node.encounter = this.FormatEncounter(encounter);
+
+          node.tl1 = salvage[0];
+          node.tl2 = salvage[1];
+          node.tl3 = salvage[2];
+          node.tl4 = salvage[3];
+          node.tl5 = salvage[4];
+          node.tl6 = salvage[5];
+          node.advancedSalvage = this.RollAdvancedSalvage();
           this.graph.nodes.push({id: node.id, label: node.id.toString(), title: `Node: ${node.id}, exits: ${node.exits}`});
           if(node.exits.length > 0)
           {
@@ -257,6 +274,37 @@ class NodeMap
 
       return salvage;
     }
+    RollAdvancedSalvage()
+    {
+      let techLevel = 1;
+      const techRoll = Math.floor(Math.random()*100);
+      if(techRoll > 50 && techRoll < 75)
+      {
+        techLevel = 2;
+      }
+      else if(techRoll >= 75 && techRoll < 85)
+      {
+        techLevel = 3;
+      }
+      else if(techRoll >= 85 && techRoll < 95)
+      {
+        techLevel = 4;
+      }
+      else if(techRoll >= 95 && techRoll < 99)
+      {
+        techLevel = 5;
+      }
+      else if(techRoll >= 99)
+      {
+        techLevel = 6;
+      }
+      let advancedSalvage = "None";
+      if(Math.floor(Math.random()*100) < 10)
+      {
+        advancedSalvage = RollSystemOrModule(techLevel);
+      }
+      return advancedSalvage;
+    }
     FormatEncounter(encounter)
     {
       let returnString = `${encounter.type}`;
@@ -278,21 +326,9 @@ class NodeMap
 
 
 function App() {
-  const printRef = useRef();
-  const handleDownloadPdf = async () =>
-  {
-    const pdf = new jsPDF();
-    const element = printRef.current;
-    const canvas = await html2canvas(element);
-    const data = canvas.toDataURL('image/png');
-    const imgProperties = pdf.getImageProperties(data);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-    pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('test.pdf');
-  };
+
   return (
-    <div ref={printRef}>
+    <div>
     <Grid />
     </div>
   );

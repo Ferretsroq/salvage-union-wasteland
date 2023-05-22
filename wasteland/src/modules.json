@@ -1,0 +1,81 @@
+{
+    "1":
+    [
+        "Comms Module",
+        "Eggs Mayhem",
+        "Equipment Locker",
+        "Firewall",
+        "Personal Recreation Device",
+        "Reactor Flare",
+        "Self Destruct Protocol",
+        "Survey Scanner",
+        "Weapons Link",
+        "Zoom Optics"
+    ],
+    "2":
+    [
+        "Barometric Weather Scanner",
+        "Damage Assessor",
+        "Deep Survey Scanner",
+        "Energy Cell",
+        "Evasion Protocols",
+        "Hull Mangetiser",
+        "IR Night Vision Optics",
+        "M313 Motion Scanner",
+        "Metal Detector",
+        "Navigation Module",
+        "Pinpoint Targeter",
+        "Projection Array",
+        "Reactor Overload",
+        "Reactor Saftey Protocols",
+        "Sleeping Beauty",
+        "Video Recording Array"
+    ],
+    "3":
+    [
+        "Advanced Weapon Link",
+        "Auto-Doctor",
+        "Comms Tapper",
+        "Concealed Locker",
+        "Coolant Flow Manifold",
+        "ECM Transmitter",
+        "Emergency Power Conduit",
+        "Encrypted Comms",
+        "Hacking Repeater Node",
+        "Multi-Targeter",
+        "Offensive Protocols",
+        "Panda Sneeze",
+        "Sonic Screecher",
+        "Voice Modulator"
+    ],
+    "4":
+    [
+        "Alpha Strike Module",
+        "Auto-Repair Droid",
+        "Dash Protocols",
+        "EM Self Destruct",
+        "Laser Guidance",
+        "Mech Scrambler",
+        "MRSI Co-Ordinator",
+        "Thermal Optics",
+        "Advanced Reactor Safety Protocols",
+        "Weapon Guidance Module",
+        "Aardvarks Tongue"
+    ],
+    "5":
+    [
+        "Advanced Targeting Array",
+        "He2 Coolant Flush",
+        "holo Projector",
+        "Multi-Optics",
+        "Neuralink Communicator",
+        "Omega Push Module"
+    ],
+    "6":
+    [
+        "DDR Module",
+        "Reaction Protocols",
+        "Reactor Transference Module",
+        "Matter Phase Module"
+    ]
+}

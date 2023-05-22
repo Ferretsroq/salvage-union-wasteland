@@ -28,6 +28,14 @@ class Node
 		this.exits = [];
 		this.id = -1;
 		this.name = 'Node';
+		this.encounter = '';
+		this.tl1 = 0;
+		this.tl2 = 0;
+		this.tl3 = 0;
+		this.tl4 = 0;
+		this.tl5 = 0;
+		this.tl6 = 0;
+		this.advancedSalvage = "";
 	}
 	toString()
 	{
