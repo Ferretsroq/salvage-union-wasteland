@@ -12,9 +12,9 @@ function pick(arr)
 function RollNode()
 {
     let feature = 'Node';
-    let result = `${Math.floor(Math.random()*100)} scrap`;
+    //let result = `${Math.floor(Math.random()*100)} scrap`;
 	
-    return new Node(feature, result);
+    return new Node(feature, '');
 }
 
 

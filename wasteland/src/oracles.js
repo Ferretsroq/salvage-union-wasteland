@@ -1,5 +1,7 @@
 //import * as dataforged from './dataforged.json' assert {type: "json"};
 import * as dataforged from './dataforged.json';
+import * as customOracles from './custom/customOracles.json';
+
 
 function RollOnOracle(oracle)
 {
@@ -92,6 +94,11 @@ function FlattenOracles()
                 }
             }
         }
+    }
+    myOracles['Custom'] = {};
+    for(let index = 0; index < Object.keys(customOracles).length; index++)
+    {
+        myOracles['Custom'][customOracles[Object.keys(customOracles)[index]]['$id']] = customOracles[Object.keys(customOracles)[index]]['Table'];
     }
     return myOracles;
 }

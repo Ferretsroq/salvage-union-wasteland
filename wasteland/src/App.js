@@ -44,6 +44,7 @@ class Grid extends Component
       {
         this.updateText(event);
       }.bind(this)};
+    document.title = 'Wasteland Hex Map';
   }
 
   
@@ -55,7 +56,7 @@ class Grid extends Component
     }
     this.state.hexes[index].color = 'red';
     this.setState({hexes: this.state.hexes});
-    this.setState({text: [`${this.state.hexes[index].text}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[index].threats.join(', ')}`]} );
+    this.setState({text: [`${this.state.hexes[index].text}`, <br/>, `Feature: ${this.state.hexes[index].biome.feature}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[index].threats.join(', ')}`]} );
     this.setState({activeGraph: this.state.hexes[index].graph});
     this.setState({subtext: ''});
   }
@@ -218,11 +219,10 @@ class NodeMap
         for(let index = 0; index < Object.keys(this.web.web).length; index++)
         {
           const node = this.web.web[index];
-          const poi = biome.rollFeature();
+          //const poi = biome.rollFeature();
           const salvage = this.RollSalvage();
           const encounter = GetEncounter();
-          node.text = `Feature: ${poi}`;
-          node.encounter = this.FormatEncounter(encounter);
+          node.encounter = this.FormatEncounter(encounter, biome);
 
           node.tl1 = salvage[0];
           node.tl2 = salvage[1];
@@ -305,7 +305,7 @@ class NodeMap
       }
       return advancedSalvage;
     }
-    FormatEncounter(encounter)
+    FormatEncounter(encounter, biome)
     {
       let returnString = `${encounter.type}`;
       if(encounter.type == 'Combat')
@@ -318,7 +318,9 @@ class NodeMap
       }
       else if(encounter.type == 'Environmental')
       {
-        returnString += `\nRelated to feature`;
+
+        //returnString += `\nRelated to feature`;
+        returnString += `\n${biome.rollEnvironmentalEncounter()}`;
       }
       return returnString;
     }
