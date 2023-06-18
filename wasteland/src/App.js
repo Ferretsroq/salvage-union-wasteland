@@ -82,12 +82,8 @@ class Grid extends Component
       this.state.subtext = <Text>{`
 ${node.text}
 Encounter: ${node.encounter}
-TL 1 Scrap: ${node.tl1}
-TL 2 Scrap: ${node.tl2}
-TL 3 Scrap: ${node.tl3}
-TL 4 Scrap: ${node.tl4}
-TL 5 Scrap: ${node.tl5}
-TL 6 Scrap: ${node.tl6}
+Tech Level: ${node.techLevel}
+Supply: ${node.supply}
 Advanced Salvage: ${node.advancedSalvage}`}</Text>
 
 
@@ -137,12 +133,8 @@ Advanced Salvage: ${node.advancedSalvage}`}</Text>
           const node = this.state.hexes[index].graph.web.web[nodeIndex];
           const nodeString = `Node ${nodeIndex}\n${node.text}
           Encounter: ${node.encounter}
-          TL 1 Scrap: ${node.tl1}
-          TL 2 Scrap: ${node.tl2}
-          TL 3 Scrap: ${node.tl3}
-          TL 4 Scrap: ${node.tl4}
-          TL 5 Scrap: ${node.tl5}
-          TL 6 Scrap: ${node.tl6}`;
+          Tech Level: ${node.tl}
+          Supply: ${node.supply}`;
           pdf.text(20, 20, nodeString);
         }
       }
@@ -210,7 +202,8 @@ class NodeMap
                     interaction:
                   {
                     dragNodes: false,
-                    dragView: false
+                    dragView: false,
+                    zoomView: false
                   }};
         this.biome = biome;
         this.text = '';
@@ -224,12 +217,14 @@ class NodeMap
           const encounter = GetEncounter();
           node.encounter = this.FormatEncounter(encounter, biome);
 
-          node.tl1 = salvage[0];
+          /*node.tl1 = salvage[0];
           node.tl2 = salvage[1];
           node.tl3 = salvage[2];
           node.tl4 = salvage[3];
           node.tl5 = salvage[4];
-          node.tl6 = salvage[5];
+          node.tl6 = salvage[5];*/
+          node.techLevel = salvage.tl;
+          node.supply = salvage.supply;
           node.advancedSalvage = this.RollAdvancedSalvage();
           this.graph.nodes.push({id: node.id, label: node.id.toString(), title: `Node: ${node.id}, exits: ${node.exits}`});
           if(node.exits.length > 0)
@@ -265,12 +260,14 @@ class NodeMap
       {
         techLevel = 6;
       }
-      let salvage = [0, 0, 0, 0, 0, 0];
+      /*let salvage = [0, 0, 0, 0, 0, 0];
       for(let tech = 0; tech < techLevel; tech++)
       {
         const scrapAmount = Math.floor(Math.random()*15)+1;
         salvage[tech] = scrapAmount;
-      }
+      }*/
+      const supply = Math.floor(Math.random()*6)+1;
+      const salvage = {tl: techLevel, supply: supply};
 
       return salvage;
     }
