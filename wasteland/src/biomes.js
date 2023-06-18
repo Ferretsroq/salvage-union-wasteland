@@ -50,6 +50,10 @@ class Biome
     {
         const environmentalEncounterOracle = this.environmentalEncounterOracles[Math.floor(Math.random()*this.environmentalEncounterOracles.length)];
         let result = RollOnOracle(environmentalEncounterOracle);
+        while(result.startsWith('[⏵'))
+        {
+            result = RollOnOracle(environmentalEncounterOracle);
+        }
         return result;
     }
 }

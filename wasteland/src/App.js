@@ -133,9 +133,10 @@ Advanced Salvage: ${node.advancedSalvage}`}</Text>
           const node = this.state.hexes[index].graph.web.web[nodeIndex];
           const nodeString = `Node ${nodeIndex}\n${node.text}
           Encounter: ${node.encounter}
-          Tech Level: ${node.tl}
+          Tech Level: ${node.techLevel}
           Supply: ${node.supply}`;
-          pdf.text(20, 20, nodeString);
+          const splitStrings = pdf.splitTextToSize(nodeString, 180);
+          pdf.text(20, 20, splitStrings);
         }
       }
       

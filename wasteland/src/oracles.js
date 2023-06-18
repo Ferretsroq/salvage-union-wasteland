@@ -5,7 +5,7 @@ import * as customOracles from './custom/customOracles.json';
 
 function RollOnOracle(oracle)
 {
-    const roll = Math.floor(Math.random()*100);
+    const roll = Math.floor(Math.random()*100)+1;
     let result = '';
     for(let index = 0; index < oracle.length; index++)
     {
