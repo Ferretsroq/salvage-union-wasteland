@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/salvage-union-wasteland/static/css/main.073c9b0a.css",
-    "main.js": "/salvage-union-wasteland/static/js/main.70cdd59d.js",
+    "main.js": "/salvage-union-wasteland/static/js/main.a057695e.js",
     "static/js/703.3be7b499.chunk.js": "/salvage-union-wasteland/static/js/703.3be7b499.chunk.js",
     "static/js/794.b979608e.chunk.js": "/salvage-union-wasteland/static/js/794.b979608e.chunk.js",
     "static/js/787.e45735d6.chunk.js": "/salvage-union-wasteland/static/js/787.e45735d6.chunk.js",
     "static/media/logo.svg": "/salvage-union-wasteland/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/salvage-union-wasteland/index.html",
     "main.073c9b0a.css.map": "/salvage-union-wasteland/static/css/main.073c9b0a.css.map",
-    "main.70cdd59d.js.map": "/salvage-union-wasteland/static/js/main.70cdd59d.js.map",
+    "main.a057695e.js.map": "/salvage-union-wasteland/static/js/main.a057695e.js.map",
     "703.3be7b499.chunk.js.map": "/salvage-union-wasteland/static/js/703.3be7b499.chunk.js.map",
     "794.b979608e.chunk.js.map": "/salvage-union-wasteland/static/js/794.b979608e.chunk.js.map",
     "787.e45735d6.chunk.js.map": "/salvage-union-wasteland/static/js/787.e45735d6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.70cdd59d.js"
+    "static/js/main.a057695e.js"
   ]
 }
