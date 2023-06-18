@@ -56,6 +56,231 @@ class Biome
         }
         return result;
     }
+    rollNextBiome()
+    {
+        const roll = Math.floor(Math.random()*100)+1;
+        if(this.name == 'Plains')
+        {
+            if(roll <= 50)
+            {
+                return Biomes['Plains'];
+            }
+            else if(roll <= 75)
+            {
+                return Biomes['Mountains'];
+            }
+            else if(roll <= 85)
+            {
+                return Biomes['Forest'];
+            }
+            else if(roll <= 95)
+            {
+                return Biomes['Desert'];
+            }
+            else if(roll <= 96)
+            {
+                return Biomes['Swamp'];
+            }
+            else if(roll <= 98)
+            {
+                return Biomes['Ruins'];
+            }
+            else if(roll <= 100)
+            {
+                return Biomes['Fortress'];
+            }
+        }
+        else if(this.name == 'Mountains')
+        {
+            if(roll <= 50)
+            {
+                return Biomes['Mountains'];
+            }
+            else if(roll <= 75)
+            {
+                return Biomes['Plains'];
+            }
+            else if(roll <= 85)
+            {
+                return Biomes['Desert'];
+            }
+            else if(roll <= 95)
+            {
+                return Biomes['Forest'];
+            }
+            else if(roll <= 96)
+            {
+                return Biomes['Swamp'];
+            }
+            else if(roll <= 98)
+            {
+                return Biomes['Ruins'];
+            }
+            else if(roll <= 100)
+            {
+                return Biomes['Fortress'];
+            }
+        }
+        else if(this.name == 'Desert')
+        {
+            if(roll <= 50)
+            {
+                return Biomes['Desert'];
+            }
+            else if(roll <= 75)
+            {
+                return Biomes['Mountains'];
+            }
+            else if(roll <= 85)
+            {
+                return Biomes['Plains'];
+            }
+            else if(roll <= 95)
+            {
+                return Biomes['Forest'];
+            }
+            else if(roll <= 96)
+            {
+                return Biomes['Swamp'];
+            }
+            else if(roll <= 98)
+            {
+                return Biomes['Ruins'];
+            }
+            else if(roll <= 100)
+            {
+                return Biomes['Fortress'];
+            }
+        }
+        else if(this.name == 'Forest')
+        {
+            if(roll <= 50)
+            {
+                return Biomes['Forest'];
+            }
+            else if(roll <= 75)
+            {
+                return Biomes['Swamp'];
+            }
+            else if(roll <= 85)
+            {
+                return Biomes['Plains'];
+            }
+            else if(roll <= 95)
+            {
+                return Biomes['Mountains'];
+            }
+            else if(roll <= 96)
+            {
+                return Biomes['Desert'];
+            }
+            else if(roll <= 98)
+            {
+                return Biomes['Ruins'];
+            }
+            else if(roll <= 100)
+            {
+                return Biomes['Fortress'];
+            }
+        }
+        else if(this.name == 'Swamp')
+        {
+            if(roll <= 50)
+            {
+                return Biomes['Swamp'];
+            }
+            else if(roll <= 75)
+            {
+                return Biomes['Forest'];
+            }
+            else if(roll <= 85)
+            {
+                return Biomes['Mountain'];
+            }
+            else if(roll <= 95)
+            {
+                return Biomes['Plains'];
+            }
+            else if(roll <= 96)
+            {
+                return Biomes['Desert'];
+            }
+            else if(roll <= 98)
+            {
+                return Biomes['Ruins'];
+            }
+            else if(roll <= 100)
+            {
+                return Biomes['Fortress'];
+            }
+        }
+        else if(this.name == 'Ruins')
+        {
+            if(roll <= 50)
+            {
+                return Biomes['Ruins'];
+            }
+            else if(roll <= 75)
+            {
+                return Biomes['Plains'];
+            }
+            else if(roll <= 85)
+            {
+                return Biomes['Desert'];
+            }
+            else if(roll <= 95)
+            {
+                return Biomes['Forest'];
+            }
+            else if(roll <= 96)
+            {
+                return Biomes['Swamp'];
+            }
+            else if(roll <= 98)
+            {
+                return Biomes['Mountains'];
+            }
+            else if(roll <= 100)
+            {
+                return Biomes['Fortress'];
+            }
+        }
+        else if(this.name == 'Fortress')
+        {
+            if(roll <= 50)
+            {
+                return Biomes['Fortress'];
+            }
+            else if(roll <= 75)
+            {
+                return Biomes['Ruins'];
+            }
+            else if(roll <= 85)
+            {
+                return Biomes['Plains'];
+            }
+            else if(roll <= 95)
+            {
+                return Biomes['Forest'];
+            }
+            else if(roll <= 96)
+            {
+                return Biomes['Swamp'];
+            }
+            else if(roll <= 98)
+            {
+                return Biomes['Mountains'];
+            }
+            else if(roll <= 100)
+            {
+                return Biomes['Desert'];
+            }
+        }
+        else
+        {
+            return Biomes['Plains'];
+        }
+    }
 }
 const Biomes = GetDefaultBiomes();
 

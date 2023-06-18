@@ -31,9 +31,21 @@ class Grid extends Component
     }
     for(let i = 0; i < 30; i++)
     {
-      const keys = Object.keys(Biomes);
-      const roll = Math.floor(Math.random()*keys.length);
-      const biome = Biomes[keys[roll]];
+      let biome = {};
+      if(i == 0)
+      {
+        const keys = Object.keys(Biomes);
+        const roll = Math.floor(Math.random()*keys.length);
+        biome = Biomes[keys[roll]];
+      }
+      else if ((i+1)%8 == 0 && i > 7 || i == 8)
+      {
+        biome = this.state.hexes[(i-7)].biome.rollNextBiome();
+      }
+      else
+      {
+        biome = this.state.hexes[i-1].biome.rollNextBiome();
+      }
       this.state.hexes[i] = {num: 0, biome: biome, color: biome.color, text: biome.name, graph: new NodeMap(10, biome), threats: this.RollThreats()};
     }
     this.state.hexes[0].color = 'red';
