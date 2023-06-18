@@ -1,0 +1,212 @@
+{
+    "Mule":
+    {
+        "name": "Mule",
+        "techLevel": 1,
+        "sp": 12,
+        "salvageValue": 7
+    },
+    "Mazona":
+    {
+        "name": "Mazona",
+        "techLevel": 1,
+        "sp": 5,
+        "salvageValue": 4
+    },
+    "Scrapper":
+    {
+        "name": "Scrapper",
+        "techLevel": 1,
+        "sp": 9,
+        "salvageValue": 6
+    },
+    "Spectrum":
+    {
+        "name": "Spectrum",
+        "techLevel": 1,
+        "sp": 17,
+        "salvageValue": 10
+    },
+    "Thresher":
+    {
+        "name": "Thresher",
+        "techLevel": 1,
+        "sp": 15,
+        "salvageValue": 9
+    },
+    "Forge":
+    {
+        "name": "Forge",
+        "techLevel": 2,
+        "sp": 16,
+        "salvageValue": 10
+    },
+    "Gopher":
+    {
+        "name": "Gopher",
+        "techLevel": 2,
+        "sp": 14,
+        "salvageValue": 4
+    },
+    "Hussar":
+    {
+        "name": "Hussar",
+        "techLevel": 2,
+        "sp": 12,
+        "salvageValue": 6
+    },
+    "Jackhamer":
+    {
+        "name": "Jackhammer",
+        "techLevel": 2,
+        "sp": 18,
+        "salvageValue": 6
+    },
+    "Kraken":
+    {
+        "name": "Kraken",
+        "techLevel": 2,
+        "sp": 24,
+        "salvageValue": 14
+    },
+    "Magpie":
+    {
+        "name": "Magpie",
+        "techLevel": 2,
+        "sp": 15,
+        "salvageValue": 5
+    },
+    "Mirrorball":
+    {
+        "name": "Mirrorball",
+        "techLevel": 2,
+        "sp": 21,
+        "salvageValue": 10
+    },
+    "Atlas":
+    {
+        "name": "Atlas",
+        "techLevel": 3,
+        "sp": 30,
+        "salvageValue": 12
+    },
+    "Brawler":
+    {
+        "name": "Brawler",
+        "techLevel": 3,
+        "sp": 25,
+        "salvageValue": 5
+    },
+    "Little Sestra":
+    {
+        "name": "Little Sestra",
+        "techLevel": 3,
+        "sp": 15,
+        "salvageValue": 7
+    },
+    "Mantis":
+    {
+        "name": "Mantis",
+        "techLevel": 3,
+        "sp": 15,
+        "salvageValue": 7
+    },
+    "Photon":
+    {
+        "name": "Photon",
+        "techLevel": 3,
+        "sp": 20,
+        "salvageValue": 8
+    },
+    "Solo":
+    {
+        "name": "Solo",
+        "techLevel": 3,
+        "sp": 16,
+        "salvageValue": 4
+    },
+    "Terra":
+    {
+        "name": "Terra",
+        "techLevel": 3,
+        "sp": 23,
+        "salvageValue": 9
+    },
+    "Aegis":
+    {
+        "name": "Aegis",
+        "techLevel": 4,
+        "sp": 30,
+        "salvageValue": 8
+    },
+    "Colossus":
+    {
+        "name": "Colossus",
+        "techLevel": 4,
+        "sp": 36,
+        "salvageValue": 12
+    },
+    "Consul":
+    {
+        "name": "Consul",
+        "techLevel": 4,
+        "sp": 15,
+        "salvageValue": 3
+    },
+    "Drop Bear":
+    {
+        "name": "Drop Bear",
+        "techLevel": 4,
+        "sp": 24,
+        "salvageValue": 6
+    },
+    "Vorpal":
+    {
+        "name": "Vorpal",
+        "techLevel": 4,
+        "sp": 18,
+        "salvageValue": 4
+    },
+    "Carrier":
+    {
+        "name": "Carrier",
+        "techLevel": 5,
+        "sp": 35,
+        "salvageValue": 9
+    },
+    "Eidolon":
+    {
+        "name": "Eidolon",
+        "techLevel": 5,
+        "sp": 21,
+        "salvageValue": 5
+    },
+    "Neura-Phage":
+    {
+        "name": "Neura-Phage",
+        "techLevel": 5,
+        "sp": 28,
+        "salvageValue": 8
+    },
+    "Iron Wyrm":
+    {
+        "name": "Iron Wyrm",
+        "techLevel": 6,
+        "sp": 54,
+        "salvageValue": 12
+    },
+    "Leviathan":
+    {
+        "name": "Leviathan",
+        "techLevel": 6,
+        "sp": 76,
+        "salvageValue": 15 
+    },
+    "Shaitan":
+    {
+        "name": "Shaitan",
+        "techLevel": 6,
+        "sp": 21,
+        "salvageValue": 6
+    }
+}

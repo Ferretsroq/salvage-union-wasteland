@@ -1,3 +1,7 @@
+import chassisTypes from './chassis.json';
+import systems from './systems.json';
+import modules from './modules.json';
+import weapons from './weapons.json';
 const encounterTypes = ['Combat', 'Social', 'Environmental'];
 const combatants = ['Mechs', 'People', 'Drones', 'Vehicles'];
 const people = ['Salvagers', 'Scouts', 'Merchants', 'Raiders'];
@@ -67,4 +71,58 @@ function GetEncounter()
     return encounter;
 }
 
-export {GetEncounter};
+class Chassis
+{
+    constructor(name, techLevel, sp, salvageValue)
+    {
+        this.name = name;
+        this.techLevel = techLevel;
+        this.sp = sp;
+        this.salvageValue = salvageValue;
+    }
+    static fromJSON(inputJSON)
+    {
+        return new Chassis(inputJSON.name, inputJSON.techLevel, inputJSON.sp, inputJSON.salvageValue);
+    }
+}
+
+class Mech
+{
+    constructor(chassis, systems, modules, weapon)
+    {
+        this.chassis = chassis;
+        this.systems = systems;
+        this.modules = modules;
+        this.weapon = weapon;
+    }
+    static GenerateMech()
+    {
+        const roll = Math.floor(Math.random()*Object.keys(chassisTypes).length);
+        const chassisType = chassisTypes[Object.keys(chassisTypes)[roll]];
+        const chassis = Chassis.fromJSON(chassisType);
+        const numSystems = Math.floor(Math.random()*3)+1;
+        const numModules = Math.floor(Math.random()*3)+1;
+        let mySystems = [];
+        let myModules = [];
+        for(let system = 0; system < numSystems; system++)
+        {
+            const techLevel = (Math.floor(Math.random()*chassis.techLevel)+1).toString();
+            mySystems.push(systems[techLevel][Math.floor(Math.random()*systems[techLevel].length)]);
+        }
+        for(let module = 0; module < numModules; module++)
+        {
+            const techLevel = (Math.floor(Math.random()*chassis.techLevel)+1).toString();
+            myModules.push(modules[techLevel][Math.floor(Math.random()*modules[techLevel].length)]);
+        }
+        const techLevel = (Math.floor(Math.random()*chassis.techLevel)+1).toString();
+        const weaponJSON = weapons[techLevel][Math.floor(Math.random()*weapons[techLevel].length)];
+        const weapon = weaponJSON;
+        return new Mech(chassis, mySystems, myModules, weapon);
+    }
+    toString()
+    {
+        return `${this.chassis.name} Mech\n${this.weapon.name}: ${this.weapon.damage} SP (Range: ${this.weapon.range})\nSystems: ${this.systems}\nModules: ${this.modules}`
+    }
+}
+
+export {GetEncounter, Mech};

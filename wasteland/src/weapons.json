@@ -1,0 +1,236 @@
+{
+    "1":
+    [
+        {
+            "name": ".50 Cal Machine Gun",
+            "range": "Close",
+            "damage": 2,
+            "techLevel": 1
+        },
+        {
+            "name": "Chainsaw Arm",
+            "range": "Close",
+            "damage": 2,
+            "techLevel": 1
+        },
+        {
+            "name": "FM-3 Flamethrower",
+            "range": "Close",
+            "damage": 2,
+            "techLevel": 1
+        },
+        {
+            "name": "Hydraulic Crusher",
+            "range": "Close",
+            "damage": 3,
+            "techLevel": 1 
+        },
+        {
+            "name": "Mini Mortar",
+            "range": "Medium",
+            "damage": 5,
+            "techLevel": 1 
+        },
+        {
+            "name": "Mining Rig",
+            "range": "Close",
+            "damage": 4,
+            "techLevel": 1 
+        },
+        {
+            "name": "Red Laser",
+            "range": "Close",
+            "damage": 3,
+            "techLevel": 1
+        },
+        {
+            "name": "Sand Blaster",
+            "range": "Close",
+            "damage": 1,
+            "techLevel": 1 
+        }
+    ],
+    "2":
+    [
+        {
+            "name": "30mm Autocannon",
+            "range": "Medium",
+            "damage": 5,
+            "techLevel":2 
+        },
+        {
+            "name": "Blue Mining Laser",
+            "range": "Long",
+            "damage": 6,
+            "techLevel": 2
+        },
+        {
+            "name": "Green Laser",
+            "range": "Medium",
+            "damage": 4,
+            "techLevel": 2
+        },
+        {
+            "name": "M2-X Mauler",
+            "range": "Close",
+            "damage": 3,
+            "techLevel": 2
+        },
+        {
+            "name": "Torpedo Tubes",
+            "range": "Close (Land)/Long (Water)",
+            "damage": 7,
+            "techLevel": 2
+        }
+    ],
+    "3":
+    [
+        {
+            "name": "120mm Cannon",
+            "range": "Long",
+            "damage": 6,
+            "techLevel": 3
+        },
+        {
+            "name": "Heavy Duty Mining Rig",
+            "range": "Close",
+            "damage": 6,
+            "techLevel": 3
+        },
+        {
+            "name": "Long Barrelled Green Laser",
+            "range": "Long",
+            "damage": 4,
+            "techLevel": 3
+        },
+        {
+            "name": "Mech Melee Armament",
+            "range": "Close",
+            "damage": 5,
+            "techLevel": 3
+        },
+        {
+            "name": "Missile Pod",
+            "range": "Long",
+            "damage": 8,
+            "techLevel": 3
+        },
+        {
+            "name": "Rail Rifle",
+            "range": "Far",
+            "damage": 6,
+            "techLevel": 3
+        },
+        {
+            "name": "Red Pulse Laser",
+            "range": "Close",
+            "damage": 5,
+            "techLevel": 3
+        },
+        {
+            "name": "Rotary Minigun",
+            "range": "Medium",
+            "damage": 4,
+            "techLevel": 3
+        }
+    ],
+    "4":
+    [
+        {
+            "name": "Automated Machine Gun Turret",
+            "range": "Close",
+            "damage": 2,
+            "techLevel": 4
+        },
+        {
+            "name": "Automated Green Laser Turret",
+            "range": "Medium",
+            "damage": 4,
+            "techLevel": 4
+        },
+        {
+            "name": "Automated 120mm Cannon Turret",
+            "range": "Long",
+            "damage": 6,
+            "techLevel": 4
+        },
+        {
+            "name": "CACB Laser",
+            "range": "Long",
+            "damage": 5,
+            "techLevel": 4 
+        },
+        {
+            "name": "Needle Missile Pod (x6)",
+            "range": "Long",
+            "damage": 1,
+            "techLevel": 4
+        },
+        {
+            "name": "Railgun",
+            "range": "Long",
+            "damage": 9,
+            "techLevel": 4
+        },
+        {
+            "name": "Snub-Nosed Blue Laser",
+            "range": "Medium (2x damage Close)",
+            "damage": 3,
+            "techLevel": 4
+        }
+    ],
+    "5":
+    [
+        {
+            "name": "Blue Beam Laser",
+            "range": "Long",
+            "damage": 4,
+            "techLevel": 5
+        },
+        {
+            "name": "Ion Cannon",
+            "range": "Long",
+            "damage": 3,
+            "techLevel": 5
+        },
+        {
+            "name": "Mole Torpedo",
+            "range": "Long",
+            "damage": 7,
+            "techLevel": 5
+        },
+        {
+            "name": "Monomolecular Blade",
+            "range": "Close",
+            "damage": 7,
+            "techLevel": 5
+        },
+        {
+            "name": "Plasma Cannon",
+            "range": "Medium",
+            "damage": 5,
+            "techLevel": 5
+        }
+    ],
+    "6":
+    [
+        {
+            "name": "120mm Autocannon",
+            "range": "Long",
+            "damage": 6,
+            "techLevel": 6
+        },
+        {
+            "name": "Experimental Particle Beam Cannon",
+            "range": "Long",
+            "damage": "2d20",
+            "techLevel": 6
+        },
+        {
+            "name": "N15 Fat Boy",
+            "range": "Far",
+            "damage": "lol",
+            "techLevel": 6
+        }
+    ]
+}

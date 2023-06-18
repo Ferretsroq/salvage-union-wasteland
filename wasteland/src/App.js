@@ -6,7 +6,7 @@ import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
 import {Biome, Biomes} from './biomes';
-import {GetEncounter} from './encounters';
+import {GetEncounter, Mech} from './encounters';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
 import {Text} from 'react-native';
@@ -94,8 +94,8 @@ class Grid extends Component
       this.state.subtext = <Text>{`
 ${node.text}
 Encounter: ${node.encounter}
-Tech Level: ${node.techLevel}
-Supply: ${node.supply}
+Area Tech Level: ${node.techLevel}
+Area Supply: ${node.supply}
 Advanced Salvage: ${node.advancedSalvage}`}</Text>
 
 
@@ -145,8 +145,8 @@ Advanced Salvage: ${node.advancedSalvage}`}</Text>
           const node = this.state.hexes[index].graph.web.web[nodeIndex];
           const nodeString = `Node ${nodeIndex}\n${node.text}
           Encounter: ${node.encounter}
-          Tech Level: ${node.techLevel}
-          Supply: ${node.supply}`;
+          Area Tech Level: ${node.techLevel}
+          Area Supply: ${node.supply}`;
           const splitStrings = pdf.splitTextToSize(nodeString, 180);
           pdf.text(20, 20, splitStrings);
         }
@@ -321,6 +321,10 @@ class NodeMap
       if(encounter.type == 'Combat')
       {
         returnString += `\nMechs: ${encounter.content.Mechs}, Drones: ${encounter.content.Drones}, Vehicles: ${encounter.content.Vehicles}, People: ${encounter.content.People}`;
+        for(let mech = 0; mech < encounter.content.Mechs; mech++)
+        {
+          returnString += `\nMech ${mech+1}: ${Mech.GenerateMech().toString()}\n---`;
+        }
       }
       else if(encounter.type == 'Social')
       {
@@ -332,6 +336,7 @@ class NodeMap
         //returnString += `\nRelated to feature`;
         returnString += `\n${biome.rollEnvironmentalEncounter()}`;
       }
+      returnString += `\n\n`;
       return returnString;
     }
 }
