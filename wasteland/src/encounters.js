@@ -88,12 +88,12 @@ class Chassis
 
 class Mech
 {
-    constructor(chassis, systems, modules, weapon)
+    constructor(chassis, systems, modules, weapons)
     {
         this.chassis = chassis;
         this.systems = systems;
         this.modules = modules;
-        this.weapon = weapon;
+        this.weapons = weapons;
     }
     static GenerateMech()
     {
@@ -104,6 +104,7 @@ class Mech
         const numModules = Math.floor(Math.random()*3)+1;
         let mySystems = [];
         let myModules = [];
+        let myWeapons = [];
         for(let system = 0; system < numSystems; system++)
         {
             const techLevel = (Math.floor(Math.random()*chassis.techLevel)+1).toString();
@@ -114,14 +115,24 @@ class Mech
             const techLevel = (Math.floor(Math.random()*chassis.techLevel)+1).toString();
             myModules.push(modules[techLevel][Math.floor(Math.random()*modules[techLevel].length)]);
         }
-        const techLevel = (Math.floor(Math.random()*chassis.techLevel)+1).toString();
-        const weaponJSON = weapons[techLevel][Math.floor(Math.random()*weapons[techLevel].length)];
-        const weapon = weaponJSON;
-        return new Mech(chassis, mySystems, myModules, weapon);
+        const numWeapons = Math.ceil(chassis.techLevel/2);
+        for(let weapon = 0; weapon < numWeapons; weapon++)
+        {
+            const techLevel = (Math.floor(Math.random()*chassis.techLevel)+1).toString();
+            const weaponJSON = weapons[techLevel][Math.floor(Math.random()*weapons[techLevel].length)];
+            myWeapons.push(weaponJSON);
+        }
+        return new Mech(chassis, mySystems, myModules, myWeapons);
     }
     toString()
     {
-        return `${this.chassis.name} Mech: ${this.chassis.sp} SP\n${this.weapon.name}: ${this.weapon.damage} SP (Range: ${this.weapon.range})\nSystems: ${this.systems}\nModules: ${this.modules}\nSalvage Value: ${this.chassis.salvageValue} T${this.chassis.techLevel} Scrap`
+        let returnString = `${this.chassis.name} Mech: ${this.chassis.sp} SP`;
+        for(let weapon = 0; weapon < this.weapons.length; weapon++)
+        {
+            returnString += `\n${this.weapons[weapon].name}: ${this.weapons[weapon].damage} SP (Range: ${this.weapons[weapon].range})`;
+        }
+        returnString += `\nSystems: ${this.systems}\nModules: ${this.modules}\nSalvage Value: ${this.chassis.salvageValue} T${this.chassis.techLevel} Scrap`;
+        return returnString;
     }
 }
 
