@@ -40,7 +40,7 @@ class Biome
         const featureOracle = this.featureOracles[Math.floor(Math.random()*this.featureOracles.length)];
         let result = RollOnOracle(featureOracle);
         //while(result == '[⏵Descriptor + Focus](Starforged/Oracles/Core/Descriptor)')
-        while(result.startsWith('[⏵'))
+        while(result.includes('[⏵'))
         {
             result = RollOnOracle(featureOracle);
         }
@@ -50,7 +50,7 @@ class Biome
     {
         const environmentalEncounterOracle = this.environmentalEncounterOracles[Math.floor(Math.random()*this.environmentalEncounterOracles.length)];
         let result = RollOnOracle(environmentalEncounterOracle);
-        while(result.startsWith('[⏵'))
+        while(result.includes('[⏵'))
         {
             result = RollOnOracle(environmentalEncounterOracle);
         }

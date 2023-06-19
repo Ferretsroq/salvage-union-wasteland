@@ -6,7 +6,7 @@ import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
 import {Biome, Biomes} from './biomes';
-import {GetEncounter, Mech} from './encounters';
+import {GetEncounter, Mech, Vehicle, Drone, Person} from './encounters';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
 import {Text} from 'react-native';
@@ -326,6 +326,18 @@ class NodeMap
         for(let mech = 0; mech < encounter.content.Mechs; mech++)
         {
           returnString += `\nMech ${mech+1}: ${Mech.GenerateMech().toString()}\n---`;
+        }
+        for(let vehicle = 0; vehicle <  encounter.content.Vehicles; vehicle++)
+        {
+          returnString += `\nVehicle ${vehicle+1}: ${Vehicle.GenerateVehicle().toString()}\n---`;
+        }
+        for(let drone = 0; drone < encounter.content.Drones; drone++)
+        {
+          returnString += `\nDrone ${drone+1}: ${Drone.GenerateDrone().toString()}\n---`;
+        }
+        for(let person = 0; person < encounter.content.People; person++)
+        {
+          returnString += `\nPerson ${person+1}: ${Person.GeneratePerson().toString()}\n---`;
         }
       }
       else if(encounter.type == 'Social')
