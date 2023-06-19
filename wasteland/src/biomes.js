@@ -195,7 +195,7 @@ class Biome
             }
             else if(roll <= 85)
             {
-                return Biomes['Mountain'];
+                return Biomes['Mountains'];
             }
             else if(roll <= 95)
             {
