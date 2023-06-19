@@ -49,8 +49,11 @@ class Grid extends Component
       this.state.hexes[i] = {num: 0, biome: biome, color: biome.color, text: biome.name, graph: new NodeMap(10, biome), threats: this.RollThreats()};
     }
     this.state.hexes[0].color = 'red';
+    this.state.activeGraph = this.state.hexes[0].graph;
+    this.state.subtext = this.state.hexes[0].graph.text;
+    this.state.text =  [`${this.state.hexes[0].text}`, <br/>, `Feature: ${this.state.hexes[0].biome.feature}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[0].threats.join(', ')}`]
     this.setState({activeGraph: this.state.hexes[0].graph});
-    this.setState({subtext: this.state.activeGraph.text});
+    this.setState({subtext: this.state.hexes[0].graph.text});
     this.setState({text: this.state.hexes[0].text});
     this.events = {selectNode: function(event) 
       {
@@ -157,7 +160,6 @@ Advanced Salvage: ${node.advancedSalvage}`}</Text>
   
   render()
   {
-
     return(
       <div ref={this.ref}>
       <button onClick={this.Save.bind(this)}>Save</button>

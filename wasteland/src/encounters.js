@@ -121,7 +121,7 @@ class Mech
     }
     toString()
     {
-        return `${this.chassis.name} Mech\n${this.weapon.name}: ${this.weapon.damage} SP (Range: ${this.weapon.range})\nSystems: ${this.systems}\nModules: ${this.modules}`
+        return `${this.chassis.name} Mech: ${this.chassis.sp} SP\n${this.weapon.name}: ${this.weapon.damage} SP (Range: ${this.weapon.range})\nSystems: ${this.systems}\nModules: ${this.modules}\nSalvage Value: ${this.chassis.salvageValue} T${this.chassis.techLevel} Scrap`
     }
 }
 
