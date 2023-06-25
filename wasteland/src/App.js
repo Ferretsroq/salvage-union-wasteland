@@ -137,6 +137,9 @@ Advanced Salvage: ${node.advancedSalvage}
   {
       const pdf = new jsPDF();
       const element = this.ref.current;
+      const readmeText = "The overall hex map represents a campaign map.\nIndividual hexes represent a region map.\nIndividual nodes within the hexes represent an area map.\nRegions have an associated biome, threats, and map of areas.\nThis document is intended to be used in something like OneNote or similar annotation program, or printed for note-taking.\nAs always, feel free to change anything generated to better suit your game!";
+      const splitReadme = pdf.splitTextToSize(readmeText, 180);
+      pdf.text(20, 20, splitReadme);
       for(let index = 0; index < 30; index++)
       { 
         for(let hex = 0; hex < 30; hex++)
@@ -154,6 +157,7 @@ Advanced Salvage: ${node.advancedSalvage}
         const imgProperties = pdf.getImageProperties(data);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+
         pdf.addPage();
         pdf.addImage(data, 'JPEG', 0, 0, pdfWidth, pdfHeight);
         
