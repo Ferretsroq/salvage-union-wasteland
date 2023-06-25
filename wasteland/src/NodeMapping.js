@@ -38,6 +38,7 @@ class Node
 		this.techLevel = 0;
 		this.supply = 0;
 		this.advancedSalvage = "";
+		this.settlement = null;
 	}
 	toString()
 	{

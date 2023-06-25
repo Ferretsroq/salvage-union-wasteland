@@ -10,7 +10,8 @@ import {GetEncounter, Mech, Vehicle, Drone, Person} from './encounters';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
 import {Text} from 'react-native';
-import {RollSystemOrModule} from './advancedsalvage'
+import {RollSystemOrModule} from './advancedsalvage';
+import {Settlement} from './settlements';
 
 
 
@@ -94,12 +95,26 @@ class Grid extends Component
     if(event.nodes.length > 0)
     {
       const node = this.state.activeGraph.web.web[event.nodes[0]];
-      this.state.subtext = <Text>{`
+      if(node.settlement == null)
+      {
+        this.state.subtext = <Text>{`
 ${node.text}
 Encounter: ${node.encounter}
 Area Tech Level: ${node.techLevel}
 Area Supply: ${node.supply}
 Advanced Salvage: ${node.advancedSalvage}`}</Text>
+      }
+      else
+      {
+        this.state.subtext = <Text>{`
+${node.text}
+Encounter: ${node.encounter}
+Area Tech Level: ${node.techLevel}
+Area Supply: ${node.supply}
+Advanced Salvage: ${node.advancedSalvage}
+\nSettlement: ${node.settlement.toString()}`}</Text>
+      }
+
 
 
       this.setState({subtext: this.state.subtext});
@@ -146,12 +161,25 @@ Advanced Salvage: ${node.advancedSalvage}`}</Text>
         {
           pdf.addPage();
           const node = this.state.hexes[index].graph.web.web[nodeIndex];
-          const nodeString = `Node ${nodeIndex}\n${node.text}
-          Encounter: ${node.encounter}
-          Area Tech Level: ${node.techLevel}
-          Area Supply: ${node.supply}`;
+          let nodeString = `Node ${nodeIndex}\n${node.text}
+Encounter: ${node.encounter}
+Area Tech Level: ${node.techLevel}
+Area Supply: ${node.supply}`;
+          if(node.settlement != null)
+          {
+            nodeString += `\n\nSettlement: ${node.settlement.toString()}`;
+          }
           const splitStrings = pdf.splitTextToSize(nodeString, 180);
-          pdf.text(20, 20, splitStrings);
+          if(splitStrings.length > 40)
+          {
+            pdf.text(20, 20, splitStrings.slice(0,40));
+            pdf.addPage();
+            pdf.text(20, 20, splitStrings.slice(40, splitStrings.length));
+          }
+          else
+          {
+            pdf.text(20, 20, splitStrings);
+          }
         }
       }
       
@@ -231,7 +259,11 @@ class NodeMap
           const salvage = this.RollSalvage();
           const encounter = GetEncounter();
           node.encounter = this.FormatEncounter(encounter, biome);
-
+          const settlementRoll = Math.floor(Math.random()*100)+1;
+          if(settlementRoll <= 10)
+          {
+            node.settlement = Settlement.GenerateSettlement();
+          }
           /*node.tl1 = salvage[0];
           node.tl2 = salvage[1];
           node.tl3 = salvage[2];
