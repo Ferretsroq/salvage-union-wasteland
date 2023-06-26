@@ -45,7 +45,12 @@ class Quest
     }
     toString()
     {
-        let returnString = `${this.goal}\nProgression:`;
+        let returnString = `${this.goal}\n`;
+        if(this.hexGoal != -1)
+        {
+            returnString += `Hex ${this.hexGoal}\n`;
+        }
+        returnString += `Progression:`;
         for(let index = 0; index < this.steps.length; index++)
         {
             if(this.steps[index].startsWith("You've figured out where to go, and it's in the middle of enemy territory."))
