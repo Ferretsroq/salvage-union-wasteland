@@ -2019,6 +2019,81 @@
       }
     ]
   },
+  "questgoal": {
+    "$id": "questgoal",
+    "Table": [
+      {
+        "Floor": "1",
+        "Ceiling": "25",
+        "Result": "A great TL 6 machine exploded here, and its components were scattered across the regions. You need to find them to either rebuild the machine or repurpose its components for your own uses."
+      },
+      {
+        "Floor": "26",
+        "Ceiling": "50",
+        "Result": "You have come across a cryptic treasure map leading to the haul of your lives. Unravel the clues and follow the breadcrumbs left behind to find the motherlode."
+      },
+      {
+        "Floor": "51",
+        "Ceiling": "75",
+        "Result": "A bio-titan has been ravaging this area with no signs of slowing down. You have found a clue that there may be a secret means of dealing with them hidden in this general area, but you need to track it down."
+      },
+      {
+        "Floor": "76",
+        "Ceiling": "100",
+        "Result": "A warlord has set up shop here and spread their influence into multiple regions. They have a grand plan, and you need an equally grand plan to unravel their desires."
+      }
+    ]
+  },
+  "questprogress": {
+    "$id": "questprogress",
+    "Table": [
+      {
+        "Floor": "1",
+        "Ceiling": "10",
+        "Result": "You track down a source of information, but it may not be cheap. It costs 1d6 scrap of your crawler's TL. Until this has been paid, you cannot progress the quest."
+      },
+      {
+        "Floor": "11",
+        "Ceiling": "20",
+        "Result": "You need time to analyze the data you have found. Start at 0 analysis progress. Roll 1d6 per salvaging mission you undertake, and add that number to your analysis progress. Once you reach 20 analysis progress, you have solved this step and can proceed with the quest."
+      },
+      {
+        "Floor": "21",
+        "Ceiling": "28",
+        "Result": "You've figured out where to go, and it's in the middle of enemy territory. Determine a region to go to, and prepare a combat encounter with a rival or antagonist."
+      },
+      {
+        "Floor": "29",
+        "Ceiling": "38",
+        "Result": "To progress the quest is going to require a lot of hard work. During Downtime, each character may forego a usual activity in exchange for working on the quest. Once 6 such actions have been taken, the quest may proceed."
+      },
+      {
+        "Floor": "39",
+        "Ceiling": "53",
+        "Result": "You need to find a data cache with information. Determine a region to house the data cache and place the cache in an area within that region. The quest may not progress until the cache is recovered."
+      },
+      {
+        "Floor": "54",
+        "Ceiling": "65",
+        "Result": "You've located a data cache, but it's in a very bad place. Determine a region to house the data cache and place the cache in an area within that region. That area becomes more dangerous — roving bandits set up shop, a bio-titan has made its lair there, or a warlord has claimed the territory (and possibly the cache itself) for their own. You cannot progress the quest until you recover the cache."
+      },
+      {
+        "Floor": "66",
+        "Ceiling": "80",
+        "Result": "A contact is willing to help, provided you help them first. Determine two regions, one starting point and one ending point. The quest cannot progress until the contact has been escorted from the start to the end safely."
+      },
+      {
+        "Floor": "81",
+        "Ceiling": "92",
+        "Result": "A rival or antagonist is massing their forces to cut the party off from their quest objective. Every subsequent step of the quest will have more enemies than before."
+      },
+      {
+        "Floor": "93",
+        "Ceiling": "100",
+        "Result": "A rival or antagonist is becoming more determined to cut the party off from their quest objective. Every subsequent step of the quest will have higher difficulty enemies than before."
+      }
+    ]
+  },
   "swamp": {
     "$id": "swamp Encounters",
     "Table": [

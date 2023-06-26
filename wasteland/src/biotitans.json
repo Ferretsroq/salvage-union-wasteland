@@ -1,0 +1,32 @@
+{
+    "Scylla":
+    {
+        "name": "Scylla",
+        "sp": 39
+    },
+    "Tyrant":
+    {
+        "name": "Tyrant",
+        "sp": 215
+    },
+    "Typhon":
+    {
+        "name": "Typhon",
+        "sp": 67
+    },
+    "Chrysalis":
+    {
+        "name": "Chrysalis",
+        "sp": 80
+    },
+    "Phazor":
+    {
+        "name": "Phazor",
+        "sp": 54
+    },
+    "Electrophorus":
+    {
+        "name": "Electrophorus",
+        "sp": 96
+    }
+}

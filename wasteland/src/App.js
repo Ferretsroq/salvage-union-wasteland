@@ -12,6 +12,8 @@ import {jsPDF} from 'jspdf';
 import {Text} from 'react-native';
 import {RollSystemOrModule} from './advancedsalvage';
 import {Settlement} from './settlements';
+import {Quest} from './quests';
+import {GetBioTitan} from './biotitan';
 
 
 
@@ -22,6 +24,7 @@ class Grid extends Component
   {
     super(props)
     this.ref = createRef();
+    this.quest = Quest.GenerateQuest(30);
     this.state = 
     {
       count: 0,
@@ -48,6 +51,57 @@ class Grid extends Component
         biome = this.state.hexes[i-1].biome.rollNextBiome();
       }
       this.state.hexes[i] = {num: 0, biome: biome, color: biome.color, text: biome.name, graph: new NodeMap(10, biome), threats: this.RollThreats()};
+    }
+    for(let index = 0; index < this.quest.hexes.length; index++)
+    {
+      if(Object.keys(this.quest.hexes[index]).length > 0)
+      {
+        if(this.quest.hexes[index].detail == "combat")
+        {
+          let encounter = GetEncounter();
+          while(encounter.type != "Combat")
+          {
+            encounter = GetEncounter();
+          }
+          const hexNum = parseInt(this.quest.hexes[index].hex);
+          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
+          node.encounter += `\n---\nQUEST ENCOUNTER\n---\n${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}`;
+        }
+        else if(this.quest.hexes[index].detail == "data cache")
+        {
+          const hexNum = parseInt(this.quest.hexes[index].hex);
+          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
+          node.encounter += `\n---\nQUEST ENCOUNTER\n---\nData Cache related to quest`;
+        }
+        else if(this.quest.hexes[index].detail == "bad place data cache")
+        {
+          const hexNum = parseInt(this.quest.hexes[index].hex);
+          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
+          const options = ["roving bandits", "a Bio-Titan", "a warlord that has claimed this territory"];
+          const option = options[Math.floor(Math.random()*options.length)];
+          node.encounter += `\n---\nQUEST ENCOUNTER\n---\nData Cache related to quest, protected by ${option}\n`;
+          if(option == "roving bandits" || option == "a warlord that has claimed this territory")
+          {
+            let encounter = GetEncounter();
+            while(encounter.type != "Combat")
+            {
+              encounter = GetEncounter();
+            }
+            node.encounter += `${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}\n`;
+          }
+          else if(option == "a Bio-Titan")
+          {
+            node.encounter += `${GetBioTitan()}\n`;
+          }
+        }
+      }
+    }
+    if(this.quest.goal.includes("bio-titan"))
+    {
+      const hexGoal = Math.floor(Math.random()*30);
+      this.quest.hexGoal = hexGoal;
+      const node = this.state.hexes[hexGoal].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexGoal].graph.web.web).length)];
+      node.encounter += `\n---\nQUEST END GOAL\n---\nBIO TITAN ${GetBioTitan()}\n`;
     }
     this.state.hexes[0].color = 'red';
     this.state.activeGraph = this.state.hexes[0].graph;
@@ -193,6 +247,7 @@ Area Supply: ${node.supply}`;
   render()
   {
     return(
+      <div>
       <div ref={this.ref}>
       <button onClick={this.Save.bind(this)}>Save</button>
       <TiledHexagons
@@ -211,6 +266,8 @@ Area Supply: ${node.supply}`;
       events={this.events}
       
     />}
+      </div>
+      <div><Text>{this.quest.toString()}</Text></div>
       </div>
     )
   }
@@ -254,7 +311,7 @@ class NodeMap
                   }};
         this.biome = biome;
         this.text = '';
-        this.web.GenerateWeb(this.size, 3);
+        this.web.GenerateWeb(this.size, 5);
         this.web.MakeNodeConnections();
         for(let index = 0; index < Object.keys(this.web.web).length; index++)
         {
@@ -262,7 +319,7 @@ class NodeMap
           //const poi = biome.rollFeature();
           const salvage = this.RollSalvage();
           const encounter = GetEncounter();
-          node.encounter = this.FormatEncounter(encounter, biome);
+          node.encounter = NodeMap.FormatEncounter(encounter, biome);
           const settlementRoll = Math.floor(Math.random()*100)+1;
           if(settlementRoll <= 10)
           {
@@ -353,7 +410,7 @@ class NodeMap
       }
       return advancedSalvage;
     }
-    FormatEncounter(encounter, biome)
+    static FormatEncounter(encounter, biome)
     {
       let returnString = `${encounter.type}`;
       if(encounter.type == 'Combat')
