@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import {Hexagon, TiledHexagons} from 'tiled-hexagons';
-import { React, Component, useRef, createRef  } from 'react';
+import { React, Component, useRef, createRef, useEffect  } from 'react';
 import { NodeWeb } from './NodeMapping';
 import {Network} from 'vis-network';
 import Graph from 'react-vis-network-graph';
@@ -27,6 +27,7 @@ class Grid extends Component
     this.ref = createRef();
     this.quest = Quest.GenerateQuest(30);
     this.rumors = [];
+    this.canvasRef = createRef();
     for(let rumor = 0; rumor < 10; rumor++)
     {
       this.rumors.push(Rumor.GenerateRumor(30));
@@ -70,11 +71,15 @@ class Grid extends Component
     this.events = {selectNode: function(event) 
       {
         this.updateText(event);
+        this.showMap(event);
       }.bind(this)};
     document.title = 'Wasteland Hex Map';
   }
 
-  
+  componentDidMount()
+  {
+    this.ctx = this.canvasRef.current.getContext('2d');
+  }
   updateCounter(index)
   {
     for(let hex = 0; hex < Object.keys(this.state.hexes).length; hex++)
@@ -86,6 +91,10 @@ class Grid extends Component
     this.setState({text: [`${this.state.hexes[index].text}`, <br/>, `Feature: ${this.state.hexes[index].biome.feature}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[index].threats.join(', ')}`]} );
     this.setState({activeGraph: this.state.hexes[index].graph});
     this.setState({subtext: ''});
+    if(this.ctx)
+    {
+      this.ctx.clearRect(0,0,100,100)
+    }
   }
 
   makeTiles(num)
@@ -131,6 +140,54 @@ Advanced Salvage: ${node.advancedSalvage}
       this.setState({subtext: this.state.subtext});
     }
   }
+  showMap(event)
+  {
+    if(event.nodes.length > 0)
+    {
+      const node = this.state.activeGraph.web.web[event.nodes[0]];
+      const noiseMap = node.noiseMap;
+      let rScale = 1;
+      let gScale = 1;
+      let bScale = 1;
+      if(this.state.activeGraph.biome.name == 'Plains')
+      {
+        rScale = 152/255;
+        gScale = 161/255;
+        bScale = 56/255;
+      }
+      else if(this.state.activeGraph.biome.name == 'Fortress')
+      {
+        rScale = 97/255;
+        gScale = 22/255;
+        bScale = 16/255;
+      }
+      else if(this.state.activeGraph.biome.name == 'Mountains')
+      {
+        rScale = 165/255;
+        gScale = 42/255;
+        bScale = 42/255;
+      }
+      else if(this.state.activeGraph.biome.name == 'Desert')
+      {
+        bScale = 0;
+      }
+      else if(this.state.activeGraph.biome.name == 'Forest')
+      {
+        rScale = 0;
+        bScale = 0;
+      }
+      for(let x = 0; x < node.noiseMap.dimension; x++)
+      {
+        for(let y = 0; y < node.noiseMap.dimension; y++)
+        {
+          const pixelValue = noiseMap.get(x, y);
+          this.ctx.fillStyle = `rgb(${Math.floor(pixelValue*255*rScale)}, ${Math.floor(pixelValue*255*gScale)}, ${Math.floor(pixelValue*255*bScale)})`;
+          this.ctx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+  }
+
   RollThreats(hex)
   {
     const threatList = ['Tyrant', 'Torment', 'Environmental', 'Brute', 'Aberration'];
@@ -274,7 +331,7 @@ Advanced Salvage: ${node.advancedSalvage}
       const splitRumors = pdf.splitTextToSize(rumorsText, 180);
       pdf.text(20, 20, splitQuest);
       pdf.addPage();
-      pdf.text(20, 20, rumorsText);
+      pdf.text(20, 20, splitRumors);
       for(let index = 0; index < 30; index++)
       { 
         for(let hex = 0; hex < 30; hex++)
@@ -283,10 +340,15 @@ Advanced Salvage: ${node.advancedSalvage}
         }
         this.state.hexes[index].color = 'red';
         this.setState({hexes: this.state.hexes});
-        this.setState({text: [`${this.state.hexes[index].text}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[index].threats.join(', ')}`]} );
+        this.setState({text: [`${this.state.hexes[index].text}`, <br/>, `Feature: ${this.state.hexes[0].biome.feature}`, <br/>, 'Threats:', <br/>, `${this.state.hexes[index].threats.join(', ')}`]} );
         this.setState({activeGraph: this.state.hexes[index].graph});
         this.setState({subtext: ''});
+        if(this.ctx)
+        {
+          this.ctx.clearRect(0,0,100,100)
+        }
         await new Promise(r => setTimeout(r, 100));
+        
         const canvas = await html2canvas(element);
         const data = canvas.toDataURL('image/jpeg');
         const imgProperties = pdf.getImageProperties(data);
@@ -300,6 +362,48 @@ Advanced Salvage: ${node.advancedSalvage}
         {
           pdf.addPage();
           const node = this.state.hexes[index].graph.web.web[nodeIndex];
+          const noiseMap = node.noiseMap;
+          let rScale = 1;
+          let gScale = 1;
+          let bScale = 1;
+          if(this.state.activeGraph.biome.name == 'Plains')
+          {
+            rScale = 152/255;
+            gScale = 161/255;
+            bScale = 56/255;
+          }
+          else if(this.state.activeGraph.biome.name == 'Fortress')
+          {
+            rScale = 97/255;
+            gScale = 22/255;
+            bScale = 16/255;
+          }
+          else if(this.state.activeGraph.biome.name == 'Mountains')
+          {
+            rScale = 165/255;
+            gScale = 42/255;
+            bScale = 42/255;
+          }
+          else if(this.state.activeGraph.biome.name == 'Desert')
+          {
+            bScale = 0;
+          }
+          else if(this.state.activeGraph.biome.name == 'Forest')
+          {
+            rScale = 0;
+            bScale = 0;
+          }
+          for(let x = 0; x < node.noiseMap.dimension; x++)
+          {
+            for(let y = 0; y < node.noiseMap.dimension; y++)
+            {
+              const pixelValue = noiseMap.get(x, y);
+              this.ctx.fillStyle = `rgb(${Math.floor(pixelValue*255*rScale)}, ${Math.floor(pixelValue*255*gScale)}, ${Math.floor(pixelValue*255*bScale)})`;
+              this.ctx.fillRect(x, y, 1, 1);
+            }
+          }
+          const submapData = this.canvasRef.current.toDataURL('image/jpeg');
+          pdf.addImage(submapData, 'JPEG', 175, 0, node.noiseMap.dimension/4, node.noiseMap.dimension/4);
           let nodeString = `Node ${nodeIndex}\n${node.text}
 Encounter: ${node.encounter}
 Area Tech Level: ${node.techLevel}
@@ -319,6 +423,7 @@ Area Supply: ${node.supply}`;
           {
             pdf.text(20, 20, splitStrings);
           }
+          
         }
       }
       
@@ -347,6 +452,7 @@ Area Supply: ${node.supply}`;
       events={this.events}
       
     />}
+    <canvas ref={this.canvasRef} width="100" height="100"/>
       </div>
       <div><Text style={{fontWeight: "bold"}}>{'Rumors\n'}</Text><Text>{this.rumors.join('\n')}</Text></div>
       <div><Text style={{fontWeight: "bold"}}>{'Quest\n'}</Text><Text>{this.quest.toString()}</Text></div>

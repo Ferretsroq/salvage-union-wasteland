@@ -1,3 +1,5 @@
+import {generatePerlinNoise} from 'perlin-noise';
+
 function weight(arr)
 {
     return [].concat(...arr.map((obj) => Array(Math.ceil(obj.weight * 100)).fill(obj))); 
@@ -39,6 +41,8 @@ class Node
 		this.supply = 0;
 		this.advancedSalvage = "";
 		this.settlement = null;
+		this.noiseMap = this.GenerateNoiseMap();
+		
 	}
 	toString()
 	{
@@ -52,9 +56,24 @@ class Node
 		node.name = inputJSON['name'];
 		return node;
 	}
+	GenerateNoiseMap()
+	{
+		return new NoiseMap(100);
+	}
 }
 
-
+class NoiseMap
+{
+	constructor(dimension)
+	{
+		this.dimension = dimension;
+		this.array = generatePerlinNoise(dimension, dimension, {octaveCount: 6});
+	}
+	get(x,y)
+	{
+		return this.array[(y*this.dimension) + x];
+	}
+}
 
 class NodeWeb
 {
