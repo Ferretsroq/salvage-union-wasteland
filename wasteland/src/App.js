@@ -14,6 +14,7 @@ import {RollSystemOrModule} from './advancedsalvage';
 import {Settlement} from './settlements';
 import {Quest} from './quests';
 import {GetBioTitan} from './biotitan';
+import {Rumor} from './rumors';
 
 
 
@@ -25,6 +26,11 @@ class Grid extends Component
     super(props)
     this.ref = createRef();
     this.quest = Quest.GenerateQuest(30);
+    this.rumors = [];
+    for(let rumor = 0; rumor < 10; rumor++)
+    {
+      this.rumors.push(Rumor.GenerateRumor(30));
+    }
     this.state = 
     {
       count: 0,
@@ -52,57 +58,8 @@ class Grid extends Component
       }
       this.state.hexes[i] = {num: 0, biome: biome, color: biome.color, text: biome.name, graph: new NodeMap(10, biome), threats: this.RollThreats()};
     }
-    for(let index = 0; index < this.quest.hexes.length; index++)
-    {
-      if(Object.keys(this.quest.hexes[index]).length > 0)
-      {
-        if(this.quest.hexes[index].detail == "combat")
-        {
-          let encounter = GetEncounter();
-          while(encounter.type != "Combat")
-          {
-            encounter = GetEncounter();
-          }
-          const hexNum = parseInt(this.quest.hexes[index].hex);
-          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
-          node.encounter += `\n---\nQUEST ENCOUNTER\n---\n${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}`;
-        }
-        else if(this.quest.hexes[index].detail == "data cache")
-        {
-          const hexNum = parseInt(this.quest.hexes[index].hex);
-          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
-          node.encounter += `\n---\nQUEST ENCOUNTER\n---\nData Cache related to quest`;
-        }
-        else if(this.quest.hexes[index].detail == "bad place data cache")
-        {
-          const hexNum = parseInt(this.quest.hexes[index].hex);
-          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
-          const options = ["roving bandits", "a Bio-Titan", "a warlord that has claimed this territory"];
-          const option = options[Math.floor(Math.random()*options.length)];
-          node.encounter += `\n---\nQUEST ENCOUNTER\n---\nData Cache related to quest, protected by ${option}\n`;
-          if(option == "roving bandits" || option == "a warlord that has claimed this territory")
-          {
-            let encounter = GetEncounter();
-            while(encounter.type != "Combat")
-            {
-              encounter = GetEncounter();
-            }
-            node.encounter += `${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}\n`;
-          }
-          else if(option == "a Bio-Titan")
-          {
-            node.encounter += `${GetBioTitan()}\n`;
-          }
-        }
-      }
-    }
-    if(this.quest.goal.includes("bio-titan"))
-    {
-      const hexGoal = Math.floor(Math.random()*30);
-      this.quest.hexGoal = hexGoal;
-      const node = this.state.hexes[hexGoal].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexGoal].graph.web.web).length)];
-      node.encounter += `\n---\nQUEST END GOAL\n---\nBIO TITAN ${GetBioTitan()}\n`;
-    }
+    this.ValidateQuest();
+    this.ValidateRumors();
     this.state.hexes[0].color = 'red';
     this.state.activeGraph = this.state.hexes[0].graph;
     this.state.subtext = this.state.hexes[0].graph.text;
@@ -186,18 +143,138 @@ Advanced Salvage: ${node.advancedSalvage}
     }
     return threats;
   }
+  ValidateQuest()
+  {
+    for(let index = 0; index < this.quest.hexes.length; index++)
+    {
+      if(Object.keys(this.quest.hexes[index]).length > 0)
+      {
+        if(this.quest.hexes[index].detail == "combat")
+        {
+          let encounter = GetEncounter();
+          while(encounter.type != "Combat")
+          {
+            encounter = GetEncounter();
+          }
+          const hexNum = parseInt(this.quest.hexes[index].hex);
+          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
+          node.encounter += `\n---\nQUEST ENCOUNTER\n---\n${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}`;
+        }
+        else if(this.quest.hexes[index].detail == "data cache")
+        {
+          const hexNum = parseInt(this.quest.hexes[index].hex);
+          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
+          node.encounter += `\n---\nQUEST ENCOUNTER\n---\nData Cache related to quest`;
+        }
+        else if(this.quest.hexes[index].detail == "bad place data cache")
+        {
+          const hexNum = parseInt(this.quest.hexes[index].hex);
+          const node = this.state.hexes[hexNum].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexNum].graph.web.web).length)];
+          const options = ["roving bandits", "a Bio-Titan", "a warlord that has claimed this territory"];
+          const option = options[Math.floor(Math.random()*options.length)];
+          node.encounter += `\n---\nQUEST ENCOUNTER\n---\nData Cache related to quest, protected by ${option}\n`;
+          if(option == "roving bandits" || option == "a warlord that has claimed this territory")
+          {
+            let encounter = GetEncounter();
+            while(encounter.type != "Combat")
+            {
+              encounter = GetEncounter();
+            }
+            node.encounter += `${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}\n`;
+          }
+          else if(option == "a Bio-Titan")
+          {
+            node.encounter += `${GetBioTitan()}\n`;
+          }
+        }
+      }
+    }
+    if(this.quest.goal.includes("bio-titan"))
+    {
+      const hexGoal = Math.floor(Math.random()*30);
+      this.quest.hexGoal = hexGoal;
+      const node = this.state.hexes[hexGoal].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexGoal].graph.web.web).length)];
+      node.encounter += `\n---\nQUEST END GOAL\n---\nBIO TITAN ${GetBioTitan()}\n`;
+    }
+    else if(this.quest.goal.includes("treasure map"))
+    {
+      const hexGoal = Math.floor(Math.random()*30);
+      this.quest.hexGoal = hexGoal;
+      const node = this.state.hexes[hexGoal].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexGoal].graph.web.web).length)];
+      node.encounter += `\n---\nQUEST END GOAL\n---\nTreasure Trove containing:\n${RollSystemOrModule(6)}\n${RollSystemOrModule(6)}\n${RollSystemOrModule(6)}\n${RollSystemOrModule(5)}\n${RollSystemOrModule(5)}\n${RollSystemOrModule(5)}\n${Math.floor(Math.random()*100)+10} TL1 Scrap\n${Math.floor(Math.random()*100)+10} TL2 Scrap\n${Math.floor(Math.random()*100)+10} TL3 Scrap\n${Math.floor(Math.random()*50)+10} TL4 Scrap\n${Math.floor(Math.random()*20)+10} TL5 Scrap\n${Math.floor(Math.random()*10)+10} TL6 Scrap\n`;
+    }
+    else if(this.quest.goal.includes("great TL 6 machine"))
+    {
+      let hexGoals = [];
+      for(let goal = 0; goal < 5; goal++)
+      {
+        let hex = Math.floor(Math.random()*30);
+        while(hexGoals.includes(hex))
+        {
+          hex = Math.floor(Math.random()*30);
+        }
+        hexGoals.push(hex);
+      }
+      this.quest.hexGoal = hexGoals;
+      for(let goal = 0; goal < this.quest.hexGoal.length; goal++)
+      {
+        const node = this.state.hexes[this.quest.hexGoal[goal]].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[this.quest.hexGoal[goal]].graph.web.web).length)];
+        node.encounter += `\n---\nQUEST GOAL\n---\nA piece of the great machine is here.\n`
+      }
+    }
+    else if(this.quest.goal.includes("A warlord has set up shop"))
+    {
+      const hexGoal = Math.floor(Math.random()*30);
+      this.quest.hexGoal = hexGoal;
+      const node = this.state.hexes[hexGoal].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[hexGoal].graph.web.web).length)];
+      node.encounter += `\n---\nQUEST END GOAL\n---\nWarlord base, or centerpiece of their master plan.\n`;
+    }
+  }
+
+  ValidateRumors()
+  {
+    for(let rumor = 0; rumor < this.rumors.length; rumor++)
+    {
+      const node = this.state.hexes[this.rumors[rumor].hex].graph.web.web[Math.floor(Math.random()*Object.keys(this.state.hexes[this.rumors[rumor].hex].graph.web.web).length)];
+      if(this.rumors[rumor].text.includes('buried'))
+      {
+        node.advancedSalvage = `${this.rumors[rumor].content} Chassis`
+      }
+      else if(this.rumors[rumor].text.includes('battle'))
+      {
+        node.supply += 10;
+      }
+      else if(this.rumors[rumor].text.includes('new warlord'))
+      {
+        let encounter = GetEncounter();
+        while(encounter.type != 'Combat')
+        {
+          encounter = GetEncounter();
+        }
+        node.encounter += `\n ${NodeMap.FormatEncounter(encounter, this.state.hexes[this.rumors[rumor].hex].biome)}`;
+      }
+      else if(this.rumors[rumor].text.includes('new settlement'))
+      {
+        node.settlement = Settlement.GenerateSettlement();
+      }
+    }
+  }
 
   async Save()
   {
       const pdf = new jsPDF();
       const element = this.ref.current;
-      const readmeText = "The overall hex map represents a campaign map.\nIndividual hexes represent a region map.\nIndividual nodes within the hexes represent an area map.\nRegions have an associated biome, threats, and map of areas.\nThis document is intended to be used in something like OneNote or similar annotation program, or printed for note-taking.\nAs always, feel free to change anything generated to better suit your game!";
+      const readmeText = "The overall hex map represents a campaign map.\nIndividual hexes represent a region map.\nIndividual nodes within the hexes represent an area map.\nRegions have an associated biome, threats, and map of areas.\nAs a potential campaign seed, this document includes a pregenerated multi-step quest tied to the map.\nThis document also includes 10 smaller rumors of points of interest seeded around the map.\nThis document is intended to be used in something like OneNote or similar annotation program, or printed for note-taking.\nAs always, feel free to change anything generated to better suit your game!";
       const splitReadme = pdf.splitTextToSize(readmeText, 180);
       pdf.text(20, 20, splitReadme);
       pdf.addPage();
       const questText = this.quest.toString();
       const splitQuest = pdf.splitTextToSize(questText, 180);
+      const rumorsText = this.rumors.join('\n');
+      const splitRumors = pdf.splitTextToSize(rumorsText, 180);
       pdf.text(20, 20, splitQuest);
+      pdf.addPage();
+      pdf.text(20, 20, rumorsText);
       for(let index = 0; index < 30; index++)
       { 
         for(let hex = 0; hex < 30; hex++)
@@ -271,7 +348,8 @@ Area Supply: ${node.supply}`;
       
     />}
       </div>
-      <div><Text>{this.quest.toString()}</Text></div>
+      <div><Text style={{fontWeight: "bold"}}>{'Rumors\n'}</Text><Text>{this.rumors.join('\n')}</Text></div>
+      <div><Text style={{fontWeight: "bold"}}>{'Quest\n'}</Text><Text>{this.quest.toString()}</Text></div>
       </div>
     )
   }
