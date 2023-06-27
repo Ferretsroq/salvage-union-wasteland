@@ -2025,7 +2025,7 @@
       {
         "Floor": "1",
         "Ceiling": "25",
-        "Result": "A great TL 6 machine exploded here, and its components were scattered across the regions. You need to find them to either rebuild the machine or repurpose its components for your own uses."
+        "Result": "A great TL 6 machine exploded here, and its components were scattered across the regions. You need to find them to either rebuild the machine or repurpose its components for your own uses. Each point of progression should lead towards the next piece of the machine."
       },
       {
         "Floor": "26",
@@ -2035,12 +2035,12 @@
       {
         "Floor": "51",
         "Ceiling": "75",
-        "Result": "A bio-titan has been ravaging this area with no signs of slowing down. You have found a clue that there may be a secret means of dealing with them hidden in this general area, but you need to track it down."
+        "Result": "A bio-titan has been ravaging this area with no signs of slowing down. You have found a clue that there may be a secret means of dealing with them hidden in this general area, but you need to track it down. Each point of progression should reveal a weakness, exploitable behavior, or dormant technology that could be used against the bio-titan."
       },
       {
         "Floor": "76",
         "Ceiling": "100",
-        "Result": "A warlord has set up shop here and spread their influence into multiple regions. They have a grand plan, and you need an equally grand plan to unravel their desires."
+        "Result": "A warlord has set up shop here and spread their influence into multiple regions. They have a grand plan, and you need an equally grand plan to unravel their desires. Each point of progression should thwart the enemy's plan in some way, or bring the party closer to understanding the enemy's ultimate goal."
       }
     ]
   },
@@ -2091,6 +2091,31 @@
         "Floor": "93",
         "Ceiling": "100",
         "Result": "A rival or antagonist is becoming more determined to cut the party off from their quest objective. Every subsequent step of the quest will have higher difficulty enemies than before."
+      }
+    ]
+  },
+  "rumors": {
+    "$id": "rumors",
+    "Table": [
+      {
+        "Floor": "1",
+        "Ceiling": "25",
+        "Result": "A $CHASSIS can be found buried in hex $HEX."
+      },
+      {
+        "Floor": "26",
+        "Ceiling": "50",
+        "Result": "A recent battle in hex $HEX left a large amount of scrap behind."
+      },
+      {
+        "Floor": "51",
+        "Ceiling": "75",
+        "Result": "A new warlord has risen up in hex $HEX."
+      },
+      {
+        "Floor": "76",
+        "Ceiling": "100",
+        "Result": "A new settlement has popped up in hex $HEX."
       }
     ]
   },
