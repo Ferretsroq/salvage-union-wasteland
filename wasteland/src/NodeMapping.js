@@ -31,6 +31,7 @@ class Node
 		this.id = -1;
 		this.name = 'Node';
 		this.encounter = '';
+		this.encounterData = null;
 		/*this.tl1 = 0;
 		this.tl2 = 0;
 		this.tl3 = 0;

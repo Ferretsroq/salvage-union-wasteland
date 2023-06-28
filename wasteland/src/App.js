@@ -185,6 +185,28 @@ Advanced Salvage: ${node.advancedSalvage}
           this.ctx.fillRect(x, y, 1, 1);
         }
       }
+      if(node.encounterData.type == 'Combat')
+      {
+        const mechs = node.encounterData.content['Mechs'];
+        const drones = node.encounterData.content['Drones'];
+        const vehicles = node.encounterData.content['Vehicles'];
+        const people = node.encounterData.content['People'];
+        const enemies = mechs+drones+vehicles+people;
+        for(let enemy = 0; enemy < enemies; enemy++)
+        {
+          const image = new Image();
+          const xcoord = Math.floor(Math.random()*80);
+          const ycoord = Math.floor(Math.random()*80);
+          image.onload = () => {
+            this.ctx.drawImage(image, xcoord, ycoord, 20, 20);
+          };
+          image.src = process.env.PUBLIC_URL + '/triangle-target.png';
+        }
+        
+      }
+      
+
+      
     }
   }
 
@@ -321,7 +343,7 @@ Advanced Salvage: ${node.advancedSalvage}
   {
       const pdf = new jsPDF();
       const element = this.ref.current;
-      const readmeText = "The overall hex map represents a campaign map.\nIndividual hexes represent a region map.\nIndividual nodes within the hexes represent an area map.\nRegions have an associated biome, threats, and map of areas.\nAs a potential campaign seed, this document includes a pregenerated multi-step quest tied to the map.\nThis document also includes 10 smaller rumors of points of interest seeded around the map.\nThis document is intended to be used in something like OneNote or similar annotation program, or printed for note-taking.\nAs always, feel free to change anything generated to better suit your game!";
+      const readmeText = "The overall hex map represents a campaign map.\nIndividual hexes represent a region map.\nIndividual nodes within the hexes represent an area map.\nRegions have an associated biome, threats, and map of areas.\nArea maps are rough elevation maps, where bright points are higher elevation and dark points are lower elevation.\nRed triangles mark approximate positions of enemy combatants.\nAs a potential campaign seed, this document includes a pregenerated multi-step quest tied to the map.\nThis document also includes 10 smaller rumors of points of interest seeded around the map.\nThis document is intended to be used in something like OneNote or similar annotation program, or printed for note-taking.\nAs always, feel free to change anything generated to better suit your game!";
       const splitReadme = pdf.splitTextToSize(readmeText, 180);
       pdf.text(20, 20, splitReadme);
       pdf.addPage();
@@ -402,7 +424,26 @@ Advanced Salvage: ${node.advancedSalvage}
               this.ctx.fillRect(x, y, 1, 1);
             }
           }
-          const submapData = this.canvasRef.current.toDataURL('image/jpeg');
+          if(node.encounterData.type == 'Combat')
+          {
+            const mechs = node.encounterData.content['Mechs'];
+            const drones = node.encounterData.content['Drones'];
+            const vehicles = node.encounterData.content['Vehicles'];
+            const people = node.encounterData.content['People'];
+            const enemies = mechs+drones+vehicles+people;
+            for(let enemy = 0; enemy < enemies; enemy++)
+            {
+              const image = new Image();
+              const xcoord = Math.floor(Math.random()*80);
+              const ycoord = Math.floor(Math.random()*80);
+              image.onload = () => {
+                this.ctx.drawImage(image, xcoord, ycoord, 20, 20);
+              };
+              image.src = process.env.PUBLIC_URL + '/triangle-target.png';
+              await new Promise(r => setTimeout(r, 1));
+            }           
+          }
+          const submapData = this.canvasRef.current.toDataURL('image/jpg');
           pdf.addImage(submapData, 'JPEG', 175, 0, node.noiseMap.dimension/4, node.noiseMap.dimension/4);
           let nodeString = `Node ${nodeIndex}\n${node.text}
 Encounter: ${node.encounter}
@@ -507,6 +548,7 @@ class NodeMap
           //const poi = biome.rollFeature();
           const salvage = this.RollSalvage();
           const encounter = GetEncounter();
+          node.encounterData = encounter;
           node.encounter = NodeMap.FormatEncounter(encounter, biome);
           const settlementRoll = Math.floor(Math.random()*100)+1;
           if(settlementRoll <= 10)
