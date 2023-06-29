@@ -160,6 +160,9 @@ Advanced Salvage: ${node.advancedSalvage}
         rScale = 97/255;
         gScale = 22/255;
         bScale = 16/255;
+        rScale *= 2;
+        gScale *= 2;
+        bScale *= 2;
       }
       else if(this.state.activeGraph.biome.name == 'Mountains')
       {
@@ -202,7 +205,16 @@ Advanced Salvage: ${node.advancedSalvage}
           };
           image.src = process.env.PUBLIC_URL + '/triangle-target.png';
         }
-        
+      }
+      if(node.settlement)
+      {
+        const image = new Image();
+        const xcoord = Math.floor(Math.random()*80);
+        const ycoord = Math.floor(Math.random()*80);
+        image.onload = () => {
+          this.ctx.drawImage(image, xcoord, ycoord, 20, 20);
+        };
+        image.src = process.env.PUBLIC_URL + '/factory.png';
       }
       
 
@@ -259,7 +271,7 @@ Advanced Salvage: ${node.advancedSalvage}
             {
               encounter = GetEncounter();
             }
-            node.encounter += `${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}\n`;
+            node.encounter += `Encounter: ${NodeMap.FormatEncounter(encounter, this.state.hexes[hexNum].biome)}\n`;
           }
           else if(option == "a Bio-Titan")
           {
@@ -330,7 +342,7 @@ Advanced Salvage: ${node.advancedSalvage}
         {
           encounter = GetEncounter();
         }
-        node.encounter += `\n ${NodeMap.FormatEncounter(encounter, this.state.hexes[this.rumors[rumor].hex].biome)}`;
+        node.encounter += `\nEncounter: ${NodeMap.FormatEncounter(encounter, this.state.hexes[this.rumors[rumor].hex].biome)}`;
       }
       else if(this.rumors[rumor].text.includes('new settlement'))
       {
@@ -440,8 +452,19 @@ Advanced Salvage: ${node.advancedSalvage}
                 this.ctx.drawImage(image, xcoord, ycoord, 20, 20);
               };
               image.src = process.env.PUBLIC_URL + '/triangle-target.png';
-              await new Promise(r => setTimeout(r, 1));
+              await new Promise(r => setTimeout(r, 100));
             }           
+          }
+          if(node.settlement)
+          {
+            const image = new Image();
+            const xcoord = Math.floor(Math.random()*80);
+            const ycoord = Math.floor(Math.random()*80);
+            image.onload = () => {
+              this.ctx.drawImage(image, xcoord, ycoord, 20, 20);
+            };
+            image.src = process.env.PUBLIC_URL + '/factory.png';
+            await new Promise(r => setTimeout(r, 100));
           }
           const submapData = this.canvasRef.current.toDataURL('image/jpg');
           pdf.addImage(submapData, 'JPEG', 175, 0, node.noiseMap.dimension/4, node.noiseMap.dimension/4);
