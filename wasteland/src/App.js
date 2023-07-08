@@ -15,6 +15,7 @@ import {Settlement} from './settlements';
 import {Quest} from './quests';
 import {GetBioTitan} from './biotitan';
 import {Rumor} from './rumors';
+import {Faction} from './factions';
 
 
 
@@ -27,6 +28,10 @@ class Grid extends Component
     this.ref = createRef();
     this.quest = Quest.GenerateQuest(30);
     this.rumors = [];
+    this.factions = [];
+    this.factions.push(Faction.GenerateFaction());
+    this.factions.push(Faction.GenerateFaction());
+    this.factions.push(Faction.GenerateFaction());
     this.canvasRef = createRef();
     for(let rumor = 0; rumor < 10; rumor++)
     {
@@ -520,6 +525,9 @@ Area Supply: ${node.supply}`;
       </div>
       <div><Text style={{fontWeight: "bold"}}>{'Rumors\n'}</Text><Text>{this.rumors.join('\n')}</Text></div>
       <div><Text style={{fontWeight: "bold"}}>{'Quest\n'}</Text><Text>{this.quest.toString()}</Text></div>
+      <div><Text style={{fontWeight: "bold"}}>{'Faction\n'}</Text><Text>{this.factions[0].toString()}</Text></div>
+      <div><Text style={{fontWeight: "bold"}}>{'Faction\n'}</Text><Text>{this.factions[1].toString()}</Text></div>
+      <div><Text style={{fontWeight: "bold"}}>{'Faction\n'}</Text><Text>{this.factions[2].toString()}</Text></div>
       </div>
     )
   }
