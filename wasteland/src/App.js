@@ -368,9 +368,13 @@ Advanced Salvage: ${node.advancedSalvage}
       const splitQuest = pdf.splitTextToSize(questText, 180);
       const rumorsText = this.rumors.join('\n');
       const splitRumors = pdf.splitTextToSize(rumorsText, 180);
+      const factionText = `${this.factions[0].toString()}\n---\n${this.factions[1].toString()}\n---\n${this.factions[2].toString()}`;
+      const splitFactions = pdf.splitTextToSize(factionText, 180);
       pdf.text(20, 20, splitQuest);
       pdf.addPage();
       pdf.text(20, 20, splitRumors);
+      pdf.addPage();
+      pdf.text(20, 20, splitFactions);
       for(let index = 0; index < 30; index++)
       { 
         for(let hex = 0; hex < 30; hex++)
