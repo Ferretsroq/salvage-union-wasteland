@@ -16,6 +16,10 @@ import {Quest} from './quests';
 import {GetBioTitan} from './biotitan';
 import {Rumor} from './rumors';
 import {Faction} from './factions';
+import * as  THREE from 'three';
+import {MapControls} from 'three/addons/controls/MapControls.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 
 
@@ -79,11 +83,24 @@ class Grid extends Component
         this.showMap(event);
       }.bind(this)};
     document.title = 'Wasteland Hex Map';
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize(250, 250);
+    document.body.appendChild(this.renderer.domElement);
+    /*const geometry = new THREE.BoxGeometry(1,1,1);
+    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    this.cube = new THREE.Mesh(geometry, material);
+    this.scene.add(this.cube);*/
+    this.camera.position.z = 1;
+    this.controls = new MapControls(this.camera, this.renderer.domElement);
+
   }
 
   componentDidMount()
   {
     this.ctx = this.canvasRef.current.getContext('2d');
+    this.animate();
   }
   updateCounter(index)
   {
@@ -100,8 +117,62 @@ class Grid extends Component
     {
       this.ctx.clearRect(0,0,100,100)
     }
-  }
+    this.scene.clear();
+    for(let nodeIndex = 0; nodeIndex < Object.keys(this.state.hexes[index].graph.web.web).length; nodeIndex++)
+    {
+      const node = this.state.hexes[index].graph.web.web[nodeIndex];
+      const noiseMap = node.noiseMap;
+      const planeGeometry = new THREE.PlaneGeometry(1, 1, 49, 49);
+      const material = new THREE.MeshBasicMaterial( {color: 0x00ff00, wireframe: true} );
+      const lineMaterial = new THREE.LineBasicMaterial( {color: 0xffff00} );
+      const textMaterial = new THREE.MeshBasicMaterial( {color: 0x0000ff});
+      for(let i = 0; i < planeGeometry.getAttribute('position').count; i++)
+      {
+        planeGeometry.getAttribute('position').setZ(i, noiseMap.array[i*2]);
+      }
+      planeGeometry.computeVertexNormals();
+      const plane = new THREE.Mesh(planeGeometry, material);
+      plane.position.x = 3*(nodeIndex%3);
+      plane.position.y = 3*(Math.floor(nodeIndex/3));
+      this.scene.add(plane);
+      const loader = new FontLoader();
+      loader.load(process.env.PUBLIC_URL + '/fonts/Courier New_Regular.json', function (font) {
+        const text = new TextGeometry(`${nodeIndex}`, {
+          font: font,
+		size: 1,
+		height: 1,
+		curveSegments: 120
+        });
+        const myText = new THREE.Mesh(text, textMaterial);
+      myText.position.x = 3*(nodeIndex%3)-1.5;
+      myText.position.y = 3*(Math.floor(nodeIndex/3))-0.5;
+      this.scene.add(myText)
+      }.bind(this));
 
+      for(let exitIndex = 0; exitIndex < node.exits.length; exitIndex++)
+      {
+        let points = [];
+        points.push(new THREE.Vector3(3*(nodeIndex%3), 3*(Math.floor(nodeIndex/3)), 1));
+        points.push(new THREE.Vector3(3*(parseInt(node.exits[exitIndex])%3), 3*(Math.floor(parseInt(node.exits[exitIndex])/3)), 1));
+        const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(lineGeometry, lineMaterial);
+        this.scene.add(line);
+      }
+      
+    }
+    
+
+  }
+  animate()
+  {
+    requestAnimationFrame(this.animate.bind(this))
+    //this.camera.rotation.x += 0.1;
+    
+    //console.log(this.camera.rotation.x);
+    //this.cube.rotation.y += 0.01;
+    this.controls.update();
+    this.renderer.render(this.scene, this.camera);
+  }
   makeTiles(num)
   {
     let tiles = [];
@@ -147,6 +218,7 @@ Advanced Salvage: ${node.advancedSalvage}
   }
   showMap(event)
   {
+    //this.scene.clear();
     if(event.nodes.length > 0)
     {
       const node = this.state.activeGraph.web.web[event.nodes[0]];
@@ -221,9 +293,19 @@ Advanced Salvage: ${node.advancedSalvage}
         };
         image.src = process.env.PUBLIC_URL + '/factory.png';
       }
-      
+      /*
+      const planeGeometry = new THREE.PlaneGeometry(1, 1, 49, 49);
+      const material = new THREE.MeshBasicMaterial( {color: 0x00ff00, wireframe: true} );
+      for(let i = 0; i < planeGeometry.getAttribute('position').count; i++)
+      {
+        planeGeometry.getAttribute('position').setZ(i, noiseMap.array[i*2]);
+      }
 
-      
+      planeGeometry.computeVertexNormals();
+      const plane = new THREE.Mesh(planeGeometry, material);
+      this.scene.add(plane);
+      this.renderer.render(this.scene, this.camera);   
+      */   
     }
   }
 

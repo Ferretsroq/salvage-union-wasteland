@@ -68,6 +68,10 @@ class Faction
             name = `${RollOnOracle(oracles['Factions']['/Oracles/Factions/Affiliation'])} of the ${RollOnOracle(oracles['Factions']['/Oracles/Factions/Legacy'])} ${RollOnOracle(oracles['Factions']['/Oracles/Factions/Identity'])}`;
         }
         const factionQuirk = RollOnOracle(oracles['Factions']['/Oracles/Factions/Quirks']);
+        while(factionQuirk.includes('⏵'))
+        {
+            factionQuirk = RollOnOracle(oracles['Factions']['/Oracles/Factions/Quirks']);
+        }
         return new Faction(name, factionType, influence, leadership, factionDomain, factionProject, factionQuirk);
     }
 }
