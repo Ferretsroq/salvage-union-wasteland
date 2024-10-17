@@ -260,8 +260,8 @@ function UploadJSON(event)
     <button @click="questClick">Show Quest</button>
     <button @click="rumorsClick">Show Rumors</button>
     <button @click="factionsClick">Show Factions</button>
-    <button @click="kickoffPDF">Save PDF/JSON</button>
-    <button @click="$refs.file.$el.click()">Upload JSON</button>
+    <!--<button @click="kickoffPDF">Save PDF/JSON</button> -->
+    <!--<button @click="$refs.file.$el.click()">Upload JSON</button>-->
     <input type="file" id="file" ref="file" style="display: none;" @change="UploadJSON($event)"/>
   </div>
   <div v-if="pdfBool" style="height: 100%; text-align: center">
