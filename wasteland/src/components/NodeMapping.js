@@ -42,7 +42,7 @@ class Node
 		this.supply = 0;
 		this.advancedSalvage = "";
 		this.settlement = null;
-		this.noiseMap = this.GenerateNoiseMap();
+		//this.noiseMap = this.GenerateNoiseMap();
 		
 	}
 	toString()

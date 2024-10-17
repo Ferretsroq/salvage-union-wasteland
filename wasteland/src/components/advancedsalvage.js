@@ -11,11 +11,11 @@ function RollSystemOrModule(tl)
     const roll = Math.floor(Math.random()*2)
     if(roll == 0)
     {
-        return `${RollFromTechLevel(tl, systems)} System`;
+        return `${RollFromTechLevel(tl, systems.default)} System`;
     }
     else
     {
-        return `${RollFromTechLevel(tl, modules)} Module`;
+        return `${RollFromTechLevel(tl, modules.default)} Module`;
     }
 }
 
